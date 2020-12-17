@@ -1,9 +1,11 @@
 package com.github.lmh01.lmh01_lib;
 
 import com.github.lmh01.lmh01_lib.init.ModItemGroups;
+import com.github.lmh01.lmh01_lib.init.items.ItemTestItem;
 import com.github.lmh01.lmh01_lib.util.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,7 +19,9 @@ public class ModEventSubscriber {
     @SubscribeEvent
     public static void onRegisterItems(RegistryEvent.Register<Item> event){
         event.getRegistry().registerAll(
-                setup(new Item(new Item.Properties().group(ModItemGroups.TAB_LMH01_LIB)), "test_item")
+                //setup(new Item(new Item.Properties().group(ModItemGroups.TAB_LMH01_LIB)), "test_item")
+               // setup(new BlockItem()
+                setup(new ItemTestItem(new Item.Properties().group(ModItemGroups.TAB_LMH01_LIB)), "test_item")
         );
     }
     public static <T extends IForgeRegistryEntry<T>> T setup(final T entry, final String name) {

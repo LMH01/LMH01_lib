@@ -3,6 +3,7 @@ package com.github.lmh01.lmh01_lib.util;
 import com.github.lmh01.lmh01_lib.helpers.DebugHelper;
 import com.github.lmh01.lmh01_lib.helpers.ErrorHelper;
 import com.github.lmh01.lmh01_lib.helpers.WarningHelper;
+import com.github.lmh01.lmh01_lib.helpers.WebHelper;
 
 public class Debug {
     /*
@@ -35,5 +36,16 @@ public class Debug {
         DebugHelper.sendDebugInformation("Debug information send: " + DebugHelper.getAmountOfDebugInformationSent(), 2, 0);
         DebugHelper.sendDebugInformation("Ein anderer Mod", 1, 0, "test_mod");
 
+    }
+    public static void testUpdateChecker(){
+        for(int i = 0; i < 6; i++){
+            try {
+                DebugHelper.sendDebugInformation("Update Available for i = " + i + ": " + UpdateCheckerManager.updateAvailable.get(i), 2, 0);
+                DebugHelper.sendDebugInformation("Newest Version for i = " + i + ": " + UpdateCheckerManager.newestVersion.get(i), 2, 0);
+            }catch (NullPointerException e){
+                DebugHelper.sendDebugInformation("Nullpointer Excelption: ", 2, 0);
+                e.printStackTrace();
+            }
+        }
     }
 }

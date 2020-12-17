@@ -13,21 +13,21 @@ public class DebugHelper {
 
     /**
      * Using this function you dont need provide a modid. The modid used will default to lmh01_lib.
-     * @param DebugInformation - The Information you want to send
+     * @param debugInformation - The Information you want to send
      * @param level - The Severity of the Information 1-5;
      *              1 = Info
      *              2 = Debug
      *              3 = Warn
      *              4 = Error
      *              5 = Fatal
-     * @param sendFrom - Defines a String that comments the DebugInformation
+     * @param sendFrom - Defines a String that comments the debugInformation
      */
-    public static void sendDebugInformation(String DebugInformation, int level, int sendFrom){
-        sendDebugInformation(DebugInformation, level, sendFrom, References.MODID);
+    public static void sendDebugInformation(String debugInformation, int level, int sendFrom){
+        sendDebugInformation(debugInformation, level, sendFrom, References.MODID);
     }
     /**
      *
-     * @param DebugInformation - The Information you want to send
+     * @param debugInformation - The Information you want to send
      * @param level - The Severity of the Information 1-5;
      *              1 = Info
      *              2 = Debug
@@ -35,9 +35,9 @@ public class DebugHelper {
      *              4 = Error
      *              5 = Fatal
      * @param MODID - The ModID from which the Information is being sent
-     * @param sendFrom - Defines a String that comments the DebugInformation
+     * @param sendFrom - Defines a String that comments the debugInformation
      */
-    public static void sendDebugInformation(String DebugInformation, int level, int sendFrom, String MODID) {
+    public static void sendDebugInformation(String debugInformation, int level, int sendFrom, String MODID) {
         String TextBody = "";
         if(activateDebugInfo) {
             /*
@@ -84,10 +84,10 @@ public class DebugHelper {
                     TextBody = "Warning: ";
                     break;
                 default:
-                    System.err.println("The Level from the 'sendFrom' Variable is not Valid! Reason this info has been send: " + DebugInformation);
+                    System.err.println("The Level from the 'sendFrom' Variable is not Valid! Reason this info has been send: " + debugInformation);
                     break;
             }
-            send(DebugInformation, level, MODID, TextBody);
+            send(debugInformation, level, MODID, TextBody);
             debugInformationCount++;
         }else{
             if(!disabledDebugInfoShown){
@@ -96,25 +96,26 @@ public class DebugHelper {
             }
 
         }
+        debugInformationCount++;
     }
-    private static void send(String DebugInformation, int level, String MODID, String TextBody) {
+    private static void send(String debugInformation, int level, String MODID, String TextBody) {
         if(!MODID.equals("")) {
             logger = LogManager.getLogger(MODID);
         }else {
             logger = LogManager.getLogger(References.MODID);
         }
         if (level == 1) {
-            logger.info(TextBody + DebugInformation);
+            logger.info(TextBody + debugInformation);
         }else if(level == 2){
-            logger.debug(TextBody + DebugInformation);
+            logger.debug(TextBody + debugInformation);
         }else if(level == 3){
-            logger.warn(TextBody + DebugInformation);
+            logger.warn(TextBody + debugInformation);
         }else if(level == 4){
-            logger.error(TextBody + DebugInformation);
+            logger.error(TextBody + debugInformation);
         }else if(level == 5){
-            logger.fatal(TextBody + DebugInformation);
+            logger.fatal(TextBody + debugInformation);
         }else{
-            logger.debug(DebugInformation);
+            logger.debug(debugInformation);
         }
     }
     /**
