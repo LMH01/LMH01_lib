@@ -5,7 +5,6 @@ import com.github.lmh01.lmh01_lib.init.items.ItemTestItem;
 import com.github.lmh01.lmh01_lib.util.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;

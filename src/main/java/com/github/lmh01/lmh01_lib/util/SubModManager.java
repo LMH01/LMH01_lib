@@ -1,9 +1,12 @@
 package com.github.lmh01.lmh01_lib.util;
 
+import com.github.lmh01.lmh01_lib.helpers.ChatHelper;
 import com.github.lmh01.lmh01_lib.helpers.DebugHelper;
+import net.minecraft.util.text.TextFormatting;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SubModManager {
     public static ArrayList<String> registeredMods = new ArrayList<>();
@@ -56,4 +59,71 @@ public class SubModManager {
         return modAddonCount;
     }
 
+    /**
+     * Prints a summary of installed mods into the console/chat. Also shows available updates.
+     * @param ingame Set true when this is called from within the game
+     * @param onlyShowNewVersions Set true when you only want to print new mod versions into the console/chat.
+     * @param showModAddons Set true when you want to show the Addons
+     */
+    public static void printSummary(boolean ingame, boolean onlyShowNewVersions, boolean showModAddons){
+        /*This part sorts the mods by aplhabet to display them in the correct order in the loading summary. Because
+         * the ArrayList registeredModNames is in another order that registeredMods this code sorts them to be
+         * displayed correctly*/
+        Collections.sort(SubModManager.registeredModNames);
+        Collections.sort(UpdateCheckerManager.newestVersion);
+        Collections.sort(SubModManager.downloadURLs);
+        Collections.sort(UpdateCheckerManager.updateAvailable);
+        for (int i = 0; i < SubModManager.getModCount(); i++){
+            for (int n = 0; n < SubModManager.getModCount()*4; n= n+4){
+                if(SubModManager.registeredModNames.get(i).equals(SubModManager.registeredMods.get(n+1))){
+                    if(UpdateCheckerManager.updateAvailable.get(i).contains("true")){
+                        if(ingame){
+                            //TODO Send to chat as TranslationTextcomponent.
+                            String tempStorageModName = SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): ";
+                            String tempStorageNewVersion = "Update available - " + UpdateCheckerManager.newestVersion.get(i);
+                            //TODO Make version number clickable to get to the update page
+                            tempStorageModName = tempStorageModName.replace(SubModManager.registeredMods.get(n),"");
+                            tempStorageNewVersion = tempStorageNewVersion.replace(SubModManager.registeredMods.get(n),"");
+                            ChatHelper.sendChatMessage(TextFormatting.GOLD + tempStorageModName + TextFormatting.DARK_AQUA + tempStorageNewVersion + TextFormatting.DARK_AQUA);
+                        }else{
+                            String tempStorage = SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): Update available - " + UpdateCheckerManager.newestVersion.get(i) + "; Download: " + SubModManager.downloadURLs.get(i).replace(SubModManager.registeredMods.get(i), "");
+                            /*When printing this into the chat the new version number will will be clickable to open the update side*/
+                            tempStorage = tempStorage.replace(SubModManager.registeredMods.get(n),"");
+                            DebugHelper.sendDebugInformation(tempStorage, 1, 0, References.MODID);
+                        }
+                    }else if(!onlyShowNewVersions){
+                        if(ingame){
+                            ChatHelper.sendChatMessage(TextFormatting.GOLD + SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): " + TextFormatting.DARK_GREEN + "Installed");
+                        }else{
+                            DebugHelper.sendDebugInformation(SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): Installed", 1, 0, References.MODID);
+                        }
+                    }
+                }
+            }
+
+        }
+        if(SubModManager.getModAddonCount() != 0 && showModAddons){
+            Collections.sort(SubModManager.registeredAddons);
+            if(ingame){
+                for (int i = 0; i < SubModManager.getModAddonCount(); i++){
+                    //TODO Add TextFormatting
+                    ChatHelper.sendChatMessage("Addons: ");
+                    ChatHelper.sendChatMessage(SubModManager.registeredAddons.get(i));
+                }
+            }else{
+                DebugHelper.sendDebugInformation("Addons:", 1, 0, References.MODID);
+                for (int i = 0; i < SubModManager.getModAddonCount(); i++){
+                    DebugHelper.sendDebugInformation(SubModManager.registeredAddons.get(i), 1, 0, References.MODID);
+                }
+            }
+        }
+    }
+
+    /**
+     * This function will print into the chat what updates are available
+     */
+    public static void printChatNotification(){
+        ChatHelper.sendChatMessage(TextFormatting.GOLD + "Updates available:");
+        SubModManager.printSummary(true, true, false);
+    }
 }

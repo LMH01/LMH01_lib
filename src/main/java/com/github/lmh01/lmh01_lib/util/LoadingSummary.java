@@ -17,6 +17,7 @@ public class LoadingSummary {
      * Prints the loading summary in the console. Later it will be supported to print the contents into the
      * chat.
      */
+    //(TODO write loading summary for beeing print into the chat (as seperate function)) Not 100% shure on that
     public static void showLoadingSummary() {
         showStartPart();
         showWaringsAndErrorsPart();
@@ -79,41 +80,14 @@ public class LoadingSummary {
         /*
         * Shows the installed mods and their Version + newVersion (See UpdateCheckerManager)
         * */
+
+
         send("LMH01 Mods: ");
-        /*This part sorts the mods by aplhabet to display them in the correct order in the loading summary. Because
-        * the ArrayList registeredModNames is in another order that registeredMods this code sorts them to be
-        * displayed correctly*/
         if(SubModManager.getModCount()!=0){
-            Collections.sort(SubModManager.registeredModNames);
-            Collections.sort(UpdateCheckerManager.newestVersion);
-            Collections.sort(SubModManager.downloadURLs);
-            for (int i = 0; i < SubModManager.getModCount(); i++){
-                for (int n = 0; n < SubModManager.getModCount()*4; n= n+4){
-                    if(SubModManager.registeredModNames.get(i).equals(SubModManager.registeredMods.get(n+1))){
-                        if(UpdateCheckerManager.updateAvailable.get(i).equals("true")){
-                            String tempStorage = SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): Update available - " + UpdateCheckerManager.newestVersion.get(i) + "; Download: " + SubModManager.downloadURLs.get(i).replace(SubModManager.registeredMods.get(i), "");
-                            /*When printing this into the chat the new version number will will be clickable to open the update side*/
-                            tempStorage = tempStorage.replace(SubModManager.registeredMods.get(n),"");
-                            send(tempStorage);
-                        }else{
-                            send(SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): Installed");
-                        }
-                    }
-                }
-
-            }
-            if(SubModManager.getModAddonCount() != 0){
-                Collections.sort(SubModManager.registeredAddons);
-                send("Addons:");
-                for (int i = 0; i < SubModManager.getModAddonCount(); i++){
-                    send(SubModManager.registeredAddons.get(i));
-                }
-            }
-
+            SubModManager.printSummary(false, false, true);
         }else{
             send("No mods installed");
         }
-
 
     }
     private static void showLMH01_libVersion(){

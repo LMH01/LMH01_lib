@@ -1,4 +1,11 @@
 {
   "item.lmh01_lib.test_item": "Test Item",
-  "itemGroup.lmh01_lib": "LMH01_lib"
+  "itemGroup.lmh01_lib": "LMH01_lib",
+  "commands.lmh01_test": "Test %s",
+  "commands.lmh01_test.colors": "Test, %s%s",
+  "commands.lmh01": "Hey, i'm Louis",
+  "commands.lmh01.loadingsummary": "Printing LoadingSummary",
+  "commands.lmh01.test": "This is a Test",
+  "commands.lmh01.test2": "This is a second test",
+  "commands.lmh01.update": "Updates available:"
 }

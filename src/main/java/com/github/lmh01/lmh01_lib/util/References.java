@@ -4,7 +4,7 @@ public class References {
 
     public static final String MODID = "lmh01_lib";
     public static final String NAME = "LMH01_lib";
-    public static final String VERSION  = "1.16.4-0.2.0";
+    public static final String VERSION  = "1.16.4-0.3.0";
     public static final String UPDATE_URL = "https://www.dropbox.com/s/ycwgajnoftka096/newestVersion.txt?dl=1";
     public static final String DOWNLOAD_URL = "https://www.curseforge.com/minecraft/mc-mods/lmh01-lib-1-16/files";
     public static final String NEWS_URL = "https://www.dropbox.com/s/gy2scr9lz8fvyv5/news.txt?dl=1";
