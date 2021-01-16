@@ -17,30 +17,21 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class LMH01Command {
 
     //private static String[] string = {"1", "2"}; Activate this String when you use second help page.
-    private static String[] string = {"1"}; //Delete this line when using second help page.
+    private static final String[] ALLOWED_PAGES = {"1"}; //Delete this line when using second help page.
     /*SuggestionProvider for /lmh01 help [page]*/
-    private static final SuggestionProvider<CommandSource> SUGGEST_PAGE = (source, builder) -> {
-        return ISuggestionProvider.suggest(string, builder);
-    };
+    private static final SuggestionProvider<CommandSource> SUGGEST_PAGE = (source, builder) -> ISuggestionProvider.suggest(ALLOWED_PAGES, builder);
 
     public static void register(CommandDispatcher<CommandSource> dispatcher){
         dispatcher.register(Commands.literal("lmh01")
-                .then(Commands.literal("help").executes(source -> {
-                return castHelpSubCommand(1);
-                }).then(Commands.argument("page", IntegerArgumentType.integer(1,1)).suggests(SUGGEST_PAGE).executes(source -> {
-                    int page = IntegerArgumentType.getInteger(source, "page");
-                    DebugHelper.sendDebugInformation("Page: " + page, 4);
-                 return castHelpSubCommand(page);
-                })
-        )).then(Commands.literal("config").executes(source -> {
-            return castConfigSubCommand(source.getSource());
-        })).then(Commands.literal("version").executes(source -> {
-            return castVersionSubCommand(source.getSource());
-        })).then(Commands.literal("links").executes(source -> {
-            return castLinksSubCommand();
-        })).then(Commands.literal("mods").executes(source -> {
-            return castModsSubCommand();
-        })));
+                .then(Commands.literal("help").executes(source -> castHelpSubCommand(1))
+                        .then(Commands.argument("page", IntegerArgumentType.integer(1,1)).suggests(SUGGEST_PAGE).executes(source -> {
+                            int page = IntegerArgumentType.getInteger(source, "page");
+                            DebugHelper.sendDebugInformation("Page: " + page, 4);
+                            return castHelpSubCommand(page);
+                        })
+        )).then(Commands.literal("config").executes(source -> castConfigSubCommand(source.getSource()))).then(Commands.literal("version").executes(source -> castVersionSubCommand(source.getSource())))
+          .then(Commands.literal("links").executes(source -> castLinksSubCommand()))
+          .then(Commands.literal("mods").executes(source -> castModsSubCommand())));
     }
     private static int castConfigSubCommand(CommandSource source){
         source.sendFeedback(new TranslationTextComponent("commands.lmh01.config.config_not_available").mergeStyle(TextFormatting.RED), true);

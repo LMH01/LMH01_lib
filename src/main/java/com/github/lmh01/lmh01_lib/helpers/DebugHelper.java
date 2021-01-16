@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class DebugHelper {
     private static int debugInformationCount;
     private static Logger logger = LogManager.getLogger(References.MODID);
-    private static ArrayList<String> commonTextBodies = new ArrayList<String>();
+    private static final ArrayList<String> COMMON_TEXT_BODIES = new ArrayList<>();
     private static int commonTextBodyNumber = 0;
 
     /**
@@ -117,11 +117,11 @@ public class DebugHelper {
      * @return Returns the number with which the text body can be used later with {@link DebugHelper#getCommonTextBody(int)}.
      */
     public static int addCommonTextBody(String textBody){
-        if(commonTextBodies.size() == 0){
-            commonTextBodies.add("");
+        if(COMMON_TEXT_BODIES.size() == 0){
+            COMMON_TEXT_BODIES.add("");
             commonTextBodyNumber++;
         }
-        commonTextBodies.add(textBody);
+        COMMON_TEXT_BODIES.add(textBody);
         return commonTextBodyNumber;
     }
 
@@ -135,7 +135,7 @@ public class DebugHelper {
             return "";
         }else{
             try {
-                return commonTextBodies.get(textBodyNumber);
+                return COMMON_TEXT_BODIES.get(textBodyNumber);
             }catch(IndexOutOfBoundsException e){
                 ErrorHelper.addError("Unable to get textBody: NullPointerException", References.MODID, e);
                 return "";

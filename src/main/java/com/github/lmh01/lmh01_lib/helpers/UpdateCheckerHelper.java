@@ -25,15 +25,15 @@ public class UpdateCheckerHelper {
 
                 if (!currentModVersion.equals(latestVersion)){
                     DebugHelper.sendDebugInformation("Update check complete for " + modid + " using url: " + updateURL + ": New update found: " + latestVersion, 4, 0);
-                    UpdateCheckerManager.updateAvailable.add(modid + "true");
-                    UpdateCheckerManager.newestVersion.add(latestVersionWithModid);
+                    UpdateCheckerManager.UPDATE_AVAILABLE.add(modid + "true");
+                    UpdateCheckerManager.NEWEST_VERSION.add(latestVersionWithModid);
                     UpdateCheckerManager.numberOfAvailableUpdates++;
                 }else{
                     DebugHelper.sendDebugInformation("Update check complete for " + modid + ": No update available", 4, 0);
-                    UpdateCheckerManager.updateAvailable.add(modid + "false");
-                    UpdateCheckerManager.newestVersion.add(currentVersionWithModid);
+                    UpdateCheckerManager.UPDATE_AVAILABLE.add(modid + "false");
+                    UpdateCheckerManager.NEWEST_VERSION.add(currentVersionWithModid);
                 }
-                UpdateCheckerManager.waitForUpdatesFinished.countDown();
+                UpdateCheckerManager.WAIT_FOR_UPDATES_FINISHED.countDown();
                 timesRun++;
             }
 

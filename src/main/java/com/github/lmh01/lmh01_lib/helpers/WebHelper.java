@@ -22,8 +22,6 @@ public class WebHelper {
             String string = scanner.nextLine();
             DebugHelper.sendDebugInformation("Content from URL: " + string, 4);
             return string;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

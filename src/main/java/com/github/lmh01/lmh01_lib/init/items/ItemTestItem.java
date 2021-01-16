@@ -8,8 +8,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
-import java.util.concurrent.TimeUnit;
-
 public class ItemTestItem extends Item {
     public ItemTestItem(Properties properties) {
         super(properties);

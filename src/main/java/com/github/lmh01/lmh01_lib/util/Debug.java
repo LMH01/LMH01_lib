@@ -49,8 +49,8 @@ public class Debug {
     public static void testUpdateChecker(){
         for(int i = 0; i < 6; i++){
             try {
-                DebugHelper.sendDebugInformation("Update Available for i = " + i + ": " + UpdateCheckerManager.updateAvailable.get(i), 2, 0);
-                DebugHelper.sendDebugInformation("Newest Version for i = " + i + ": " + UpdateCheckerManager.newestVersion.get(i), 2, 0);
+                DebugHelper.sendDebugInformation("Update Available for i = " + i + ": " + UpdateCheckerManager.UPDATE_AVAILABLE.get(i), 2, 0);
+                DebugHelper.sendDebugInformation("Newest Version for i = " + i + ": " + UpdateCheckerManager.NEWEST_VERSION.get(i), 2, 0);
             }catch (NullPointerException e){
                 DebugHelper.sendDebugInformation("Nullpointer Excelption: ", 2, 0);
                 e.printStackTrace();

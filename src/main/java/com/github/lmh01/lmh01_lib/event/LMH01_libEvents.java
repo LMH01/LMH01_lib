@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 public class LMH01_libEvents {
 
     private static boolean updateInfoShown = false;
-    private static boolean updateInfoShownComplete = false;
 
     /*Mod commands registry*/
     @SubscribeEvent
@@ -31,12 +30,6 @@ public class LMH01_libEvents {
         if(Minecraft.getInstance().currentScreen == null && !updateInfoShown){
             updateInfoShown = true;
             UpdateCheckerManager.printChatNotification(true);
-            /*for(int i = 0; i<SubModManager.getModCount(); i++){
-                if(UpdateCheckerManager.updateAvailable.get(i).contains("true") && !updateInfoShownComplete){
-                    UpdateCheckerManager.printChatNotification();
-                    updateInfoShownComplete = true;
-                }
-            }*/
         }
     }
 }

@@ -18,7 +18,7 @@ public class LoadingSummary {
         showWaringsAndErrorsPart();
         showLMH01_libVersion();
         showNews();
-        if(SubModManager.getModCount() == UpdateCheckerManager.updateAvailable.size()){
+        if(SubModManager.getModCount() == UpdateCheckerManager.UPDATE_AVAILABLE.size()){
             showComponentsPart();
         }else{
             WarningHelper.addWarning("Can't show information about LMH01 Mods in loading summary now: Update Checks are not complete yet.");

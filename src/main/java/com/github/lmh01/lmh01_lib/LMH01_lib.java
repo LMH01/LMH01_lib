@@ -35,7 +35,7 @@ public class LMH01_lib {
         DebugHelper.sendDebugInformation("Starting postInit",4);
         //TODO decide if i should keep the news loader and if yes implement it
         UpdateCheckerManager.checkForUpdates();
-        Thread thread = new Thread(UpdateCheckerManager.runnableWaitForUpdatesFinishedAndSendLoadingSummary);
+        Thread thread = new Thread(UpdateCheckerManager.RUNNABLE_WAIT_FOR_UPDATES_FINISHED_AND_SEND_LOADING_SUMMARY);
         thread.start();
         DebugHelper.sendDebugInformation("LMH01_lib loading complete:",4);
     }

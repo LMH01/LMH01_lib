@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 public class UpdateCheckerManager {
-    public static ArrayList<String> updateAvailable = new ArrayList<>();
-    public static ArrayList<String> newestVersion = new ArrayList<>();
-    public static final CountDownLatch waitForUpdatesFinished = new CountDownLatch(SubModManager.getModCount()+1);
+    public static final ArrayList<String> UPDATE_AVAILABLE = new ArrayList<>();
+    public static final ArrayList<String> NEWEST_VERSION = new ArrayList<>();
+    public static final CountDownLatch WAIT_FOR_UPDATES_FINISHED = new CountDownLatch(SubModManager.getModCount()+1);
     public static boolean newLMH01_libVersionAvailable = false;
     public static String newestLMH01_libVersion = "";
     public static int numberOfAvailableUpdates = 0;
@@ -35,17 +35,17 @@ public class UpdateCheckerManager {
         checkLMH01_libForUpdates();
         int modNumber = 1;
         for (int i = 0; i < SubModManager.getModCount()*4; i= i+4){
-            DebugHelper.sendDebugInformation("Checking for updates with parameters: updateURL: " + SubModManager.registeredMods.get(i+3) +
-                    " modid: " + SubModManager.registeredMods.get(i) + " currentVersion: " + SubModManager.registeredMods.get(i+2), 4, 0);
-            UpdateCheckerHelper.checkForUpdates(SubModManager.registeredMods.get(i+3), SubModManager.registeredMods.get(i), SubModManager.registeredMods.get(i+2));
+            DebugHelper.sendDebugInformation("Checking for updates with parameters: updateURL: " + SubModManager.REGISTERED_MODS.get(i+3) +
+                    " modid: " + SubModManager.REGISTERED_MODS.get(i) + " currentVersion: " + SubModManager.REGISTERED_MODS.get(i+2), 4, 0);
+            UpdateCheckerHelper.checkForUpdates(SubModManager.REGISTERED_MODS.get(i+3), SubModManager.REGISTERED_MODS.get(i), SubModManager.REGISTERED_MODS.get(i+2));
             modNumber++;
 
         }
     }
     /*Shows Loading Summary when all update checkers are done*/
-    public static Runnable runnableWaitForUpdatesFinishedAndSendLoadingSummary = () -> {
+    public static final Runnable RUNNABLE_WAIT_FOR_UPDATES_FINISHED_AND_SEND_LOADING_SUMMARY = () -> {
         try {
-            waitForUpdatesFinished.await();
+            WAIT_FOR_UPDATES_FINISHED.await();
             LoadingSummary.showLoadingSummary();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -64,7 +64,7 @@ public class UpdateCheckerManager {
                 if(!newestVersion.equals(References.VERSION)){
                     newLMH01_libVersionAvailable = true;
                 }
-                waitForUpdatesFinished.countDown();
+                WAIT_FOR_UPDATES_FINISHED.countDown();
             }
         }.start();
     }

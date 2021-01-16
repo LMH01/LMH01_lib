@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class WarningHelper {
     private static int Warnings = 0;
-    private static ArrayList<String> ListOfWarnings = new ArrayList<String>();
-    public static int warningTextBodyPosition = DebugHelper.addCommonTextBody("Warning: ");
+    private static final ArrayList<String> LIST_OF_WARNINGS = new ArrayList<>();
+    public static final int WARNING_TEXT_BODY_POSITION = DebugHelper.addCommonTextBody("Warning: ");
     /**
      * ModID will be defaulted as lmh01_lib;
      * This function will register the warning inside an array. The warning will also be shown in the console.
@@ -21,9 +21,9 @@ public class WarningHelper {
      * @param ModID - The modid from which the warning has been sent.
      */
     public static void addWarning(String Description, String ModID){
-        ListOfWarnings.add(ModID + ": " + Description);
+        LIST_OF_WARNINGS.add(ModID + ": " + Description);
         Warnings++;
-        DebugHelper.sendDebugInformation(Description, 3, warningTextBodyPosition, ModID);
+        DebugHelper.sendDebugInformation(Description, 3, WARNING_TEXT_BODY_POSITION, ModID);
     }
     /**
      * This function will return all registered warnings as a string. One line per warning. Sorted in the way the warnings have been registered.
@@ -31,7 +31,7 @@ public class WarningHelper {
     public static String getListOfWarningsAsString(){
         String CompletedListOfWarnings = "List of all warnings: ";
         for(int n=0; n<Warnings; n++){
-            CompletedListOfWarnings = CompletedListOfWarnings + "\n" + ListOfWarnings.get(n);
+            CompletedListOfWarnings = CompletedListOfWarnings + "\n" + LIST_OF_WARNINGS.get(n);
         }
         DebugHelper.sendDebugInformation("List of all warnings has been created", 4);
         return CompletedListOfWarnings;
@@ -40,7 +40,7 @@ public class WarningHelper {
      * This function will return all registered warnings as array.
      */
     public static ArrayList<String> getListOfWarningsAsArray(){
-        return ListOfWarnings;
+        return LIST_OF_WARNINGS;
     }
     /**
      * This function will return the amount of registered warnings.
