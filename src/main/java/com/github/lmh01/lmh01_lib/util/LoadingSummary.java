@@ -2,10 +2,7 @@ package com.github.lmh01.lmh01_lib.util;
 
 import com.github.lmh01.lmh01_lib.helpers.DebugHelper;
 import com.github.lmh01.lmh01_lib.helpers.ErrorHelper;
-import com.github.lmh01.lmh01_lib.helpers.UpdateCheckerHelper;
 import com.github.lmh01.lmh01_lib.helpers.WarningHelper;
-
-import java.util.Collections;
 
 public class LoadingSummary {
    /*
@@ -14,10 +11,8 @@ public class LoadingSummary {
      * */
 
     /**
-     * Prints the loading summary in the console. Later it will be supported to print the contents into the
-     * chat.
+     * Prints the loading summary in the console.
      */
-    //(TODO write loading summary for beeing print into the chat (as seperate function)) Not 100% shure on that
     public static void showLoadingSummary() {
         showStartPart();
         showWaringsAndErrorsPart();
@@ -108,7 +103,7 @@ public class LoadingSummary {
      * @param message The message sent
      */
     private static void send (String message){
-        DebugHelper.sendDebugInformation(message, 1, 0, References.MODID);
+        DebugHelper.sendDebugInformation(message, 5);
     }
 }
 

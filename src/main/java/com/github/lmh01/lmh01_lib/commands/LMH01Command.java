@@ -2,75 +2,83 @@ package com.github.lmh01.lmh01_lib.commands;
 
 import com.github.lmh01.lmh01_lib.helpers.ChatHelper;
 import com.github.lmh01.lmh01_lib.helpers.DebugHelper;
-import com.github.lmh01.lmh01_lib.util.LoadingSummary;
+import com.github.lmh01.lmh01_lib.util.References;
 import com.github.lmh01.lmh01_lib.util.SubModManager;
-import com.mojang.brigadier.Command;
+import com.github.lmh01.lmh01_lib.util.UpdateCheckerManager;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.ArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.command.arguments.ArgumentTypes;
-import net.minecraft.command.arguments.EntityArgument;
-import net.minecraft.command.impl.DifficultyCommand;
-import net.minecraft.command.impl.FillCommand;
-import net.minecraft.command.impl.GameModeCommand;
-import net.minecraft.command.impl.GameRuleCommand;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class LMH01Command {
+
+    //private static String[] string = {"1", "2"}; Activate this String when you use second help page.
+    private static String[] string = {"1"}; //Delete this line when using second help page.
+    /*SuggestionProvider for /lmh01 help [page]*/
+    private static final SuggestionProvider<CommandSource> SUGGEST_PAGE = (source, builder) -> {
+        return ISuggestionProvider.suggest(string, builder);
+    };
+
     public static void register(CommandDispatcher<CommandSource> dispatcher){
-        dispatcher.register(Commands.literal("lmh01").executes(source -> {
-            return lmh01(source.getSource(), source.getSource().asPlayer(), "");
-        /*First Command*/
-        }).then(Commands.literal("command").executes(source -> {
-            return lmh01(source.getSource(), source.getSource().asPlayer(), "loadingsummary");
-            })./*First Sub-Command*/
-                then(Commands.literal("test").executes(source -> {
-            return lmh01(source.getSource(), source.getSource().asPlayer(), "test");
-            })./*Second Sub-Command*/
-                then(Commands.literal("testStage").executes(source -> {
-                    return lmh01(source.getSource(), source.getSource().asPlayer(), "secondtest");
-            })
-        /*Second Command*/
-        ))).then(Commands.literal("updates").executes(source -> {
-            return lmh01(source.getSource(), source.getSource().asPlayer(), "updates");
+        dispatcher.register(Commands.literal("lmh01")
+                .then(Commands.literal("help").executes(source -> {
+                return castHelpSubCommand(1);
+                }).then(Commands.argument("page", IntegerArgumentType.integer(1,1)).suggests(SUGGEST_PAGE).executes(source -> {
+                    int page = IntegerArgumentType.getInteger(source, "page");
+                    DebugHelper.sendDebugInformation("Page: " + page, 4);
+                 return castHelpSubCommand(page);
+                })
+        )).then(Commands.literal("config").executes(source -> {
+            return castConfigSubCommand(source.getSource());
+        })).then(Commands.literal("version").executes(source -> {
+            return castVersionSubCommand(source.getSource());
+        })).then(Commands.literal("links").executes(source -> {
+            return castLinksSubCommand();
+        })).then(Commands.literal("mods").executes(source -> {
+            return castModsSubCommand();
         })));
     }
-
-    /**
-     * This function is called from {@link LMH01Command#register(CommandDispatcher)} to execute all different sub-commands.
-     * @param source CommandSource
-     * @param player PlayerEntity
-     * @param usage String that tells what command part to execute
-     * @return Returns 1
-     */
-    private static int lmh01(CommandSource source, PlayerEntity player, String usage){
-        //TODO implement all sub-commands from the 1.8.9 lmh01_lib, then delete the placeholders
-        DebugHelper.sendDebugInformation("Casting Command lmh01: " + usage, 2, 0);
-        switch (usage) {
-            case "":
-                source.sendFeedback(new TranslationTextComponent("commands.lmh01", player.getDisplayName()), true);
-                break;
-            case "loadingsummary":
-                source.sendFeedback(new TranslationTextComponent("commands.lmh01.loadingsummary", player.getDisplayName()), true);
-                LoadingSummary.showLoadingSummary();
-                break;
-            case "test":
-                source.sendFeedback(new TranslationTextComponent("commands.lmh01.test", player.getDisplayName()), true);
-                break;
-            case "test2":
-                source.sendFeedback(new TranslationTextComponent("commands.lmh01.test2", player.getDisplayName()), true);
-                break;
-            case "secondtest":
-
-                break;
-            case "updates":
-                SubModManager.printChatNotification();
-                break;
+    private static int castConfigSubCommand(CommandSource source){
+        source.sendFeedback(new TranslationTextComponent("commands.lmh01.config.config_not_available").mergeStyle(TextFormatting.RED), true);
+        return 1;
+    }
+    private static int castVersionSubCommand(CommandSource source){
+        UpdateCheckerManager.printLMH01LibVersionToChat(source);
+        return 1;
+    }
+    private static int castLinksSubCommand(){
+        ChatHelper.sendTranslatedChatMessage("commands.lmh01.links.firstLine", TextFormatting.DARK_GREEN);
+        ChatHelper.sendTranslatedClickableLinkWithTranslatedToolTip("commands.lmh01.links.lmh01_lib_on_curseforge", TextFormatting.GOLD, References.MOD_WEBSITE_URL, "commands.lmh01.links.lmh01_lib_on_curseforge.tooltip");
+        ChatHelper.sendTranslatedClickableLinkWithTranslatedToolTip("commands.lmh01.links.lmh01_lib_on_github", TextFormatting.GOLD, References.MOD_GITHUB_URL, "commands.lmh01.links.lmh01_lib_on_github.tooltip");
+        ChatHelper.sendTranslatedClickableLinkWithTranslatedToolTip("commands.lmh01.links.lmh01_mods_on_twitter", TextFormatting.GOLD, References.LMH01_MODS_ON_TWITTER, "commands.lmh01.links.lmh01_mods_on_twitter.tooltip");
+        return 1;
+    }
+    private static int castModsSubCommand(){
+        if(SubModManager.getModCount()==0 && SubModManager.getModAddonCount()==0){
+            ChatHelper.sendTranslatedChatMessage("commands.lmh01.mods.firstLine_without_mods", TextFormatting.DARK_GREEN);
+        }else{
+            ChatHelper.sendTranslatedChatMessage("commands.lmh01.mods.firstLine_with_mods", TextFormatting.DARK_GREEN);
+            SubModManager.printSummary(true, false,true);
+            ChatHelper.sendTranslatedChatMessage("text.lmh01.click_version_hint", TextFormatting.GRAY);
+        }
+        return 1;
+    }
+    private static int castHelpSubCommand(int page){
+        if (page == 1) {
+            /*6 commands per help site*/
+            ChatHelper.sendTranslatedChatMessage("commands.lmh01.help.help_page_1", TextFormatting.AQUA);
+            ChatHelper.sendTranslatedChatMessage("commands.lmh01.help.help", TextFormatting.DARK_GREEN);
+            ChatHelper.sendTranslatedChatMessage("commands.lmh01.help.config", TextFormatting.DARK_GREEN);
+            ChatHelper.sendTranslatedChatMessage("commands.lmh01.help.version", TextFormatting.DARK_GREEN);
+            ChatHelper.sendTranslatedChatMessage("commands.lmh01.help.links", TextFormatting.DARK_GREEN);
+            ChatHelper.sendTranslatedChatMessage("commands.lmh01.help.mods", TextFormatting.DARK_GREEN);
+        }else if (page == 2) {
+            /*This can be reactivated once i need a second page*/
+            //ChatHelper.sendTranslatedChatMessage("commands.lmh01.help.help_page_2", TextFormatting.AQUA);
         }
         return 1;
     }

@@ -2,9 +2,12 @@ package com.github.lmh01.lmh01_lib.util;
 
 import com.github.lmh01.lmh01_lib.helpers.ChatHelper;
 import com.github.lmh01.lmh01_lib.helpers.DebugHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-
-import java.net.URL;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.HoverEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -31,7 +34,7 @@ public class SubModManager {
      */
     public static void registerSubMod(String modid, String name, String version, String updateURL, String downloadURL){
         modsCount++;
-        DebugHelper.sendDebugInformation("Registering new SubMod: " + modid + ", " + name + ", " + version + ", " + updateURL, 2, 0);
+        DebugHelper.sendDebugInformation("Registering new SubMod: modid: " + modid + ", name: " + name + ", version: " + version + ", updateURL: " + updateURL + ", downloadURL: " + downloadURL, 4, 0);
         registeredMods.add(modid);
         registeredMods.add(name);
         registeredMods.add(version);
@@ -48,7 +51,7 @@ public class SubModManager {
      */
     public static void registerModAddon(String name){
         modAddonCount++;
-        DebugHelper.sendDebugInformation("Registering new Addon: " + name, 2, 0);
+        DebugHelper.sendDebugInformation("Registering new Addon: name: " + name, 4, 0);
         registeredAddons.add(name);
     }
 
@@ -61,9 +64,9 @@ public class SubModManager {
 
     /**
      * Prints a summary of installed mods into the console/chat. Also shows available updates.
-     * @param ingame Set true when this is called from within the game
+     * @param ingame Set true when this is called from within the game.
      * @param onlyShowNewVersions Set true when you only want to print new mod versions into the console/chat.
-     * @param showModAddons Set true when you want to show the Addons
+     * @param showModAddons Set true when you want to show the Addons.
      */
     public static void printSummary(boolean ingame, boolean onlyShowNewVersions, boolean showModAddons){
         /*This part sorts the mods by aplhabet to display them in the correct order in the loading summary. Because
@@ -78,24 +81,27 @@ public class SubModManager {
                 if(SubModManager.registeredModNames.get(i).equals(SubModManager.registeredMods.get(n+1))){
                     if(UpdateCheckerManager.updateAvailable.get(i).contains("true")){
                         if(ingame){
-                            //TODO Send to chat as TranslationTextcomponent.
                             String tempStorageModName = SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): ";
-                            String tempStorageNewVersion = "Update available - " + UpdateCheckerManager.newestVersion.get(i);
-                            //TODO Make version number clickable to get to the update page
+                            String tempStorageNewVersion = UpdateCheckerManager.newestVersion.get(i);
+                            String tempStorageDownloadURL = SubModManager.downloadURLs.get(i);
                             tempStorageModName = tempStorageModName.replace(SubModManager.registeredMods.get(n),"");
                             tempStorageNewVersion = tempStorageNewVersion.replace(SubModManager.registeredMods.get(n),"");
-                            ChatHelper.sendChatMessage(TextFormatting.GOLD + tempStorageModName + TextFormatting.DARK_AQUA + tempStorageNewVersion + TextFormatting.DARK_AQUA);
+                            final String tempStorageDownloadURLToUse = tempStorageDownloadURL.replace(SubModManager.registeredMods.get(n), "");
+
+                            Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.GOLD + tempStorageModName + TextFormatting.DARK_AQUA + tempStorageNewVersion).modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, tempStorageDownloadURLToUse))).modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.click_to_open_mod_download_website")))), Minecraft.getInstance().player.getUniqueID());
                         }else{
                             String tempStorage = SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): Update available - " + UpdateCheckerManager.newestVersion.get(i) + "; Download: " + SubModManager.downloadURLs.get(i).replace(SubModManager.registeredMods.get(i), "");
                             /*When printing this into the chat the new version number will will be clickable to open the update side*/
                             tempStorage = tempStorage.replace(SubModManager.registeredMods.get(n),"");
-                            DebugHelper.sendDebugInformation(tempStorage, 1, 0, References.MODID);
+                            DebugHelper.sendDebugInformation(tempStorage, 5);
                         }
                     }else if(!onlyShowNewVersions){
                         if(ingame){
-                            ChatHelper.sendChatMessage(TextFormatting.GOLD + SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): " + TextFormatting.DARK_GREEN + "Installed");
+                            String tempStorageDownloadURL = SubModManager.downloadURLs.get(i);
+                            final String tempStorageDownloadURLToUse = tempStorageDownloadURL.replace(SubModManager.registeredMods.get(n), "");
+                            Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.GOLD + SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): " + TextFormatting.DARK_GREEN + "Installed").modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, tempStorageDownloadURLToUse))).modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.click_to_open_mod_download_website")))), Minecraft.getInstance().player.getUniqueID());
                         }else{
-                            DebugHelper.sendDebugInformation(SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): Installed", 1, 0, References.MODID);
+                            DebugHelper.sendDebugInformation(SubModManager.registeredModNames.get(i) + " (" + SubModManager.registeredMods.get(n+2) + "): Installed", 5);
                         }
                     }
                 }
@@ -105,25 +111,18 @@ public class SubModManager {
         if(SubModManager.getModAddonCount() != 0 && showModAddons){
             Collections.sort(SubModManager.registeredAddons);
             if(ingame){
+                ChatHelper.sendChatMessage(TextFormatting.DARK_GREEN + "Addons: ");
                 for (int i = 0; i < SubModManager.getModAddonCount(); i++){
                     //TODO Add TextFormatting
-                    ChatHelper.sendChatMessage("Addons: ");
-                    ChatHelper.sendChatMessage(SubModManager.registeredAddons.get(i));
+                    ChatHelper.sendChatMessage(TextFormatting.GOLD + SubModManager.registeredAddons.get(i));
                 }
             }else{
-                DebugHelper.sendDebugInformation("Addons:", 1, 0, References.MODID);
+                DebugHelper.sendDebugInformation("Addons:", 5);
                 for (int i = 0; i < SubModManager.getModAddonCount(); i++){
-                    DebugHelper.sendDebugInformation(SubModManager.registeredAddons.get(i), 1, 0, References.MODID);
+                    DebugHelper.sendDebugInformation(SubModManager.registeredAddons.get(i), 5);
                 }
             }
         }
     }
 
-    /**
-     * This function will print into the chat what updates are available
-     */
-    public static void printChatNotification(){
-        ChatHelper.sendChatMessage(TextFormatting.GOLD + "Updates available:");
-        SubModManager.printSummary(true, true, false);
-    }
 }

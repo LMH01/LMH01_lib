@@ -4,116 +4,101 @@ import com.github.lmh01.lmh01_lib.util.References;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+
 public class DebugHelper {
-    public static boolean activateDebugInfo = true;
     private static int debugInformationCount;
-    private static int DebugLevel;
     private static Logger logger = LogManager.getLogger(References.MODID);
-    private static boolean disabledDebugInfoShown = false;
+    private static ArrayList<String> commonTextBodies = new ArrayList<String>();
+    private static int commonTextBodyNumber = 0;
 
     /**
-     * Using this function you dont need provide a modid. The modid used will default to lmh01_lib.
-     * @param debugInformation - The Information you want to send
-     * @param level - The Severity of the Information 1-5;
-     *              1 = Info
-     *              2 = Debug
+     * Sends a debug information into the console.
+     * This should be the default function to call.
+     * Use {@link DebugHelper#sendDebugInformation(String, int, int, String)} if you want to use a predefined string that comments the information. See {@link DebugHelper#addCommonTextBody(String)} for additional information.
+     * @param debugInformation The information you want to send.
+     * @param level The Severity of the Information 1-5;
+     *              1 = Fatal
+     *              2 = Error
      *              3 = Warn
-     *              4 = Error
-     *              5 = Fatal
-     * @param sendFrom - Defines a String that comments the debugInformation
+     *              4 = Info
+     *              5 = Debug
+     * @param ModID The ModID from which the Information es being sent.
      */
-    public static void sendDebugInformation(String debugInformation, int level, int sendFrom){
-        sendDebugInformation(debugInformation, level, sendFrom, References.MODID);
+    public static void sendDebugInformation(String debugInformation, int level, String ModID){
+        send(debugInformation, level, ModID, "");
     }
     /**
-     *
-     * @param debugInformation - The Information you want to send
-     * @param level - The Severity of the Information 1-5;
-     *              1 = Info
-     *              2 = Debug
+     * Sends a debug information into the console.
+     * Additionally you have the option to define a String-Number which comments the debugInformation. See {@link DebugHelper#addCommonTextBody(String)} for additional information.
+     * @param debugInformation The information you want to send.
+     * @param level The Severity of the Information 1-5;
+     *              1 = Fatal
+     *              2 = Error
      *              3 = Warn
-     *              4 = Error
-     *              5 = Fatal
-     * @param MODID - The ModID from which the Information is being sent
-     * @param sendFrom - Defines a String that comments the debugInformation
+     *              4 = Info
+     *              5 = Debug
+     * @param ModID The ModID from which the Information is being sent.
+     * @param caseNumber Defines a String that comments the debugInformation. See {@link DebugHelper#addCommonTextBody(String)} for additional information.
      */
-    public static void sendDebugInformation(String debugInformation, int level, int sendFrom, String MODID) {
-        String TextBody = "";
-        if(activateDebugInfo) {
-            /*
-             * SendFrom:
-             * 0 = Send as Standard Info
-             * 1 = Send DebugInfo as Error
-             * 2 = Send DebugInfo from Config
-             * 3 = Send DebugInfo from ItemRegistering
-             * 4 = Send DebugInfo from ItemCrafting
-             * 5 = Send DebugInfo from BlockRegistering
-             * 6 = Send DebugInfo from BlockCrafting
-             * 7 = Send DebugInfo from Error Helper
-             * 8 = Send DebugInfo from Furnace Recipe
-             * 9 = Send DebugInfo from Warning Helper
-             * */
-            /*Setting the Text Body for the DebugSendingProcess*/
-            switch (sendFrom) {
-                case 0:
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    TextBody = "Loading Config for variable name: ";
-                    break;
-                case 3:
-                    TextBody = "Registering Item: ";
-                    break;
-                case 4:
-                    TextBody = "Registering Crafting Recipe for Item: ";
-                    break;
-                case 5:
-                    TextBody = "Registering Block: ";
-                    break;
-                case 6:
-                    TextBody = "Registering Crafting Recipe for Block";
-                    break;
-                case 7:
-                    TextBody = "An ERROR occurred: ";
-                    break;
-                case 8:
-                    TextBody = "Registering Furnace Recipe for Item: ";
-                    break;
-                case 9:
-                    TextBody = "Warning: ";
-                    break;
-                default:
-                    System.err.println("The Level from the 'sendFrom' Variable is not Valid! Reason this info has been send: " + debugInformation);
-                    break;
-            }
-            send(debugInformation, level, MODID, TextBody);
-            debugInformationCount++;
-        }else{
-            if(!disabledDebugInfoShown){
-                send("Debug information sending has been disabled for all LMH01 mods! This was the last message!",3, "", "");
-                disabledDebugInfoShown = true;
-            }
-
-        }
+    public static void sendDebugInformation(String debugInformation, int level, int caseNumber, String ModID) {
+        send(debugInformation, level, ModID, getCommonTextBody(caseNumber));
         debugInformationCount++;
     }
-    private static void send(String debugInformation, int level, String MODID, String TextBody) {
-        if(!MODID.equals("")) {
-            logger = LogManager.getLogger(MODID);
+    /**
+     * Using this function you don't need provide a ModID. The ModID used will default to lmh01_lib.
+     * Additionally you have the option to define a String-Number which comments the debugInformation. See {@link DebugHelper#addCommonTextBody(String)} for additional information.
+     * @param debugInformation The information you want to send.
+     * @param level The Severity of the Information 1-5;
+     *              1 = Fatal
+     *              2 = Error
+     *              3 = Warn
+     *              4 = Info
+     *              5 = Debug
+     * @param caseNumber Defines a String that comments the debugInformation. See {@link DebugHelper#addCommonTextBody(String)} for additional information.
+     */
+    public static void sendDebugInformation(String debugInformation, int level, int caseNumber){
+        sendDebugInformation(debugInformation, level, caseNumber, References.MODID);
+    }
+    /**
+     * Using this function you dont need to provide a modid. The modid used will default to lmh01_lib.
+     * @param debugInformation The information you want to send.
+     * @param level The Severity of the Information 1-5;
+     *              1 = Fatal
+     *              2 = Error
+     *              3 = Warn
+     *              4 = Info
+     *              5 = Debug
+     */
+    public static void sendDebugInformation(String debugInformation, int level){
+        sendDebugInformation(debugInformation, level, 0, References.MODID);
+    }
+
+    /**
+     * Sends an exception into the console.
+     * @param exception The exception.
+     * @param modid The modid from which the exception is being sent.
+     */
+    public static void sendException(Exception exception, String modid){
+        logger = LogManager.getLogger(modid);
+        logger.error(exception);
+    }
+    private static void send(String debugInformation, int level, String ModID, String TextBody) {
+        if(!ModID.equals("")) {
+            logger = LogManager.getLogger(ModID);
         }else {
             logger = LogManager.getLogger(References.MODID);
         }
         if (level == 1) {
-            logger.info(TextBody + debugInformation);
+            logger.fatal(TextBody + debugInformation);
         }else if(level == 2){
-            logger.debug(TextBody + debugInformation);
+            logger.error(TextBody + debugInformation);
         }else if(level == 3){
             logger.warn(TextBody + debugInformation);
         }else if(level == 4){
-            logger.error(TextBody + debugInformation);
+            logger.info(TextBody + debugInformation);
         }else if(level == 5){
-            logger.fatal(TextBody + debugInformation);
+            logger.debug(TextBody + debugInformation);
         }else{
             logger.debug(debugInformation);
         }
@@ -124,5 +109,38 @@ public class DebugHelper {
      */
     public static int getAmountOfDebugInformationSent(){
         return debugInformationCount;
+    }
+
+    /**
+     * Adds a common text body to be used later.
+     * @param textBody The text body that should be added.
+     * @return Returns the number with which the text body can be used later with {@link DebugHelper#getCommonTextBody(int)}.
+     */
+    public static int addCommonTextBody(String textBody){
+        if(commonTextBodies.size() == 0){
+            commonTextBodies.add("");
+            commonTextBodyNumber++;
+        }
+        commonTextBodies.add(textBody);
+        return commonTextBodyNumber;
+    }
+
+    /**
+     * Gets the text body from specified position in array.
+     * @param textBodyNumber Position in array. {@link DebugHelper#addCommonTextBody(String)} provides the position.
+     * @return Returns the text body to be used.
+     */
+    private static String getCommonTextBody(int textBodyNumber){
+        if(textBodyNumber == 0){
+            return "";
+        }else{
+            try {
+                return commonTextBodies.get(textBodyNumber);
+            }catch(IndexOutOfBoundsException e){
+                ErrorHelper.addError("Unable to get textBody: NullPointerException", References.MODID, e);
+                return "";
+            }
+        }
+
     }
 }

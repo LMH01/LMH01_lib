@@ -12,7 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class LMH01TestCommand {
+public class LMH01DebugCommand {
 
     //TODO Make this command only available in debug mode (Debug mode can be turned off and on in the config)
     private static final SuggestionProvider<CommandSource> SUGGEST_COLOR = (source, builder) -> {
@@ -20,7 +20,7 @@ public class LMH01TestCommand {
     };
 
     public static void register(CommandDispatcher<CommandSource> dispatcher){
-        dispatcher.register(Commands.literal("lmh01_test").executes(source -> {
+        dispatcher.register(Commands.literal("lmh01_debug").executes(source -> {
             return lmh01(source.getSource(), source.getSource().asPlayer());
         }).then(Commands.argument("target", EntityArgument.player()).executes(source -> {
                     return lmh01(source.getSource(), EntityArgument.getPlayer(source, "target"));

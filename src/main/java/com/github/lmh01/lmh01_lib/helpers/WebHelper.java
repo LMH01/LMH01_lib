@@ -1,11 +1,12 @@
 package com.github.lmh01.lmh01_lib.helpers;
 
+import com.github.lmh01.lmh01_lib.util.References;
+import net.minecraft.util.text.TextFormatting;
 import java.awt.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
-
 
 public class WebHelper {
     /**
@@ -19,7 +20,7 @@ public class WebHelper {
             java.net.URL url = new URL(urlIn);
             Scanner scanner = new Scanner(url.openStream());
             String string = scanner.nextLine();
-            DebugHelper.sendDebugInformation("Content from URL: " + string, 2, 0);
+            DebugHelper.sendDebugInformation("Content from URL: " + string, 4);
             return string;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -28,17 +29,25 @@ public class WebHelper {
         }
         return "";
     }
-
     /**
+     * Does not work as intended. Might be removed in a future build.
+     * Use {@link ChatHelper#sendClickableLink(String, String)} or {@link ChatHelper#sendTranslatedClickableLink(String, TextFormatting, String)} to print a clickable message into the chat with which a website can be opened.
      * Opens a new browserTab with given url
      * @param url the url
+     * @return returns true if the operation was successful
      */
-    public static void openWebPage(String url) {
+    @Deprecated
+    public static boolean openWebPage(String url) {
+        boolean success;
         try {
             Desktop.getDesktop().browse(new URL(url).toURI());
+            success = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            success = false;
+            DebugHelper.sendException(e, References.MODID);
         }
+        return success;
     }
+
 
 }
