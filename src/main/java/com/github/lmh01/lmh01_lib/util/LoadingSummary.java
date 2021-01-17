@@ -18,7 +18,7 @@ public class LoadingSummary {
         showWaringsAndErrorsPart();
         showLMH01_libVersion();
         showNews();
-        if(SubModManager.getModCount() == UpdateCheckerManager.UPDATE_AVAILABLE.size()){
+        if(SubModManager.getModCount() == UpdateCheckerManager.getUpdateAvailableArrayList().size()){
             showComponentsPart();
         }else{
             WarningHelper.addWarning("Can't show information about LMH01 Mods in loading summary now: Update Checks are not complete yet.");
@@ -86,16 +86,16 @@ public class LoadingSummary {
 
     }
     private static void showLMH01_libVersion(){
-        if(UpdateCheckerManager.newLMH01_libVersionAvailable){
-            send("An update for LMH01_lib is available: " + UpdateCheckerManager.newestLMH01_libVersion + " Download - " + References.DOWNLOAD_URL);
+        if(UpdateCheckerManager.isNewLMH01_libVersionAvailable()){
+            send("An update for LMH01_lib is available: " + UpdateCheckerManager.getNewestLMH01_libVersion() + " Download - " + References.DOWNLOAD_URL);
         }else{
             send("Version: " + References.VERSION);
         }
 
     }
     private static void showNews(){
-        if(NewsHandler.areNewsAvailable){
-            send("News: " + NewsHandler.news);
+        if(NewsHandler.areNewsAvailable()){
+            send("News: " + NewsHandler.getNews());
         }
     }
     /**

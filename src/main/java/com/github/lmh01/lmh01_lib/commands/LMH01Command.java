@@ -9,11 +9,9 @@ import com.github.lmh01.lmh01_lib.util.UpdateCheckerManager;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextFormatting;
 
 public class LMH01Command {
@@ -22,6 +20,8 @@ public class LMH01Command {
     private static final String[] ALLOWED_PAGES = {"1"}; //Delete this line when using second help page.
     /*SuggestionProvider for /lmh01 help [page]*/
     private static final SuggestionProvider<CommandSource> SUGGEST_PAGE = (source, builder) -> ISuggestionProvider.suggest(ALLOWED_PAGES, builder);
+
+    //TODO Write sub command with which all warnings and errors can be viewed.
 
     public static void register(CommandDispatcher<CommandSource> dispatcher){
         dispatcher.register(Commands.literal("lmh01")
@@ -44,8 +44,7 @@ public class LMH01Command {
         return 1;
     }
     private static int castLinksSubCommand(CommandSource source){
-        DebugHelper.sendDebugInformation("isRunningOnClientSide: " + LMH01_lib.runningOnClientSide, 5);
-        DebugHelper.sendDebugInformation("isRunningOnClientSideConfirmed: " + LMH01_lib.isRunningOnClientSideConfirmed, 5);
+        DebugHelper.sendDebugInformation("isRunningOnClientSide: " + LMH01_lib.isRunningOnClientSide(), 5);
         /* TODO This is a temporary solution as i can't get this to work:
          *  public static int castLinksSubCommand(CommandSource cource, ICommandSender iCommandSender){
          *      if(iCommandSource instanceof PlayerEntity){Execution of command in chat}else{execution of command in console}
@@ -53,7 +52,7 @@ public class LMH01Command {
          *  I just don't know where i am supposed to get the ICommandSource from
          *  Because this does not work the player will get the same message as the console when playing on a server.
          */
-        if(LMH01_lib.runningOnClientSide){
+        if(LMH01_lib.isRunningOnClientSide()){
             CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.links.firstLine", TextFormatting.DARK_GREEN, source,true, References.MOD_WEBSITE_URL, "commands.lmh01.links.lmh01_lib_on_curseforge.tooltip");
             CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.links.lmh01_lib_on_curseforge", TextFormatting.GOLD, source,true, References.MOD_WEBSITE_URL, "commands.lmh01.links.lmh01_lib_on_curseforge.tooltip");
             CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.links.lmh01_lib_on_github", TextFormatting.GOLD, source, true, References.MOD_GITHUB_URL, "commands.lmh01.links.lmh01_lib_on_github.tooltip");
@@ -71,7 +70,7 @@ public class LMH01Command {
             CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.mods.firstLine_without_mods", TextFormatting.DARK_GREEN, source, true);
         }else{
            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.mods.firstLine_with_mods", TextFormatting.DARK_GREEN, source, true);
-            if(LMH01_lib.isRunningOnClientSideConfirmed){
+            if(LMH01_lib.isRunningOnClientSide()){
                 SubModManager.printSummary(true, false,true);
             }else{
                 SubModManager.printSummary(false, false,true);

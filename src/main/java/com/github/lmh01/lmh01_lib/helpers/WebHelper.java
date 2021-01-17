@@ -19,7 +19,7 @@ public class WebHelper {
             java.net.URL url = new URL(urlIn);
             Scanner scanner = new Scanner(url.openStream());
             String string = scanner.nextLine();
-            DebugHelper.sendDebugInformation("Content from URL: " + string, 4);
+            DebugHelper.sendDebugInformation("Content from URL: " + string, 5);
             return string;
         } catch (IOException e) {
             e.printStackTrace();

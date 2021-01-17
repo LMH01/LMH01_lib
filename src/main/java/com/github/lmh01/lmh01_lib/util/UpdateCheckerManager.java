@@ -1,5 +1,6 @@
 package com.github.lmh01.lmh01_lib.util;
 
+import com.github.lmh01.lmh01_lib.LMH01_lib;
 import com.github.lmh01.lmh01_lib.helpers.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandSource;
@@ -12,12 +13,14 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 public class UpdateCheckerManager {
-    public static final ArrayList<String> UPDATE_AVAILABLE = new ArrayList<>();
-    public static final ArrayList<String> NEWEST_VERSION = new ArrayList<>();
-    public static final CountDownLatch WAIT_FOR_UPDATES_FINISHED = new CountDownLatch(SubModManager.getModCount()+1);
-    public static boolean newLMH01_libVersionAvailable = false;
-    public static String newestLMH01_libVersion = "";
-    public static int numberOfAvailableUpdates = 0;
+    //TODO Make all main variables private and let them get called by functions to prevent misuse.
+    private static final ArrayList<String> UPDATE_AVAILABLE = new ArrayList<>();
+    private static final ArrayList<String> NEWEST_VERSION = new ArrayList<>();
+    private static final ArrayList<String> REGISTERED_MODS = SubModManager.getRegisteredModsArrayList();
+    private static final CountDownLatch WAIT_FOR_UPDATES_FINISHED = new CountDownLatch(SubModManager.getModCount()+1);
+    private static boolean newLMH01_libVersionAvailable = false;
+    private static String newestLMH01_libVersion = "";
+    private static int numberOfAvailableUpdates = 0;
 
     /*
     * The UpdateCheckerManager organizes all update check requests from the different lmh01 mods.
@@ -32,16 +35,73 @@ public class UpdateCheckerManager {
      * Checks all registered lmh01 mods for updates. Register a new sub-mod fia {@link SubModManager#registerSubMod(String, String, String, String, String)}
      */
     public static void checkForUpdates(){
-        checkLMH01_libForUpdates();
-        int modNumber = 1;
-        for (int i = 0; i < SubModManager.getModCount()*4; i= i+4){
-            DebugHelper.sendDebugInformation("Checking for updates with parameters: updateURL: " + SubModManager.REGISTERED_MODS.get(i+3) +
-                    " modid: " + SubModManager.REGISTERED_MODS.get(i) + " currentVersion: " + SubModManager.REGISTERED_MODS.get(i+2), 4, 0);
-            UpdateCheckerHelper.checkForUpdates(SubModManager.REGISTERED_MODS.get(i+3), SubModManager.REGISTERED_MODS.get(i), SubModManager.REGISTERED_MODS.get(i+2));
-            modNumber++;
-
+        if(SubModManager.areAllModsRegistered()){
+            checkLMH01_libForUpdates();
+            int modNumber = 1;
+            for (int i = 0; i < SubModManager.getModCount()*4; i= i+4){
+                UpdateCheckerHelper.checkForUpdates(REGISTERED_MODS.get(i+3), REGISTERED_MODS.get(i), REGISTERED_MODS.get(i+2));
+                modNumber++;
+            }
+        }else{
+            WarningHelper.addWarning("Unable to check lmh01_lib and registered mods for updates: The registering process for child mods is not yet complete.");
         }
     }
+
+    /**
+     * Adds an entry to the UPDATE_AVAILABLE array list.
+     * Do not use unless you know what you are doing!
+     * @param modid The modid.
+     * @param updateAvailable True if an update is available.
+     */
+    public static void addUpdateAvailable(String modid, boolean updateAvailable){
+        if(updateAvailable){
+            UPDATE_AVAILABLE.add(modid + "true");
+        }else{
+            UPDATE_AVAILABLE.add(modid + "false");
+        }
+    }
+
+    /**
+     * Adds an entry to the NEWEST_VERSION array list.
+     * Do not use unless you know what you are doing!
+     * @param newestVersion The newest version.
+     */
+    public static void addNewestVersion(String newestVersion){
+        NEWEST_VERSION.add(newestVersion);
+    }
+
+    /**
+     * Increases the number of available updates.
+     * @param number The number of available updates.
+     */
+    public static void increaseNumberOfAvailableUpdates(int number){
+        numberOfAvailableUpdates = numberOfAvailableUpdates + number;
+    }
+
+    /**
+     * Counts down the countdown latch by one.
+     * Do not use unless you know what you are doing!
+     */
+    public static void countDownWaitForUpdatesFinished(){
+        WAIT_FOR_UPDATES_FINISHED.countDown();
+    }
+
+    /**
+     * Returns the update available array list.
+     * @return The array list.
+     */
+    public static ArrayList<String> getUpdateAvailableArrayList(){
+        return UPDATE_AVAILABLE;
+    }
+
+    /**
+     * Returns the newest version array list.
+     * @return The array list.
+     */
+    public static ArrayList<String> getNewestVersionArrayList(){
+        return NEWEST_VERSION;
+    }
+
     /*Shows Loading Summary when all update checkers are done*/
     public static final Runnable RUNNABLE_WAIT_FOR_UPDATES_FINISHED_AND_SEND_LOADING_SUMMARY = () -> {
         try {
@@ -67,6 +127,22 @@ public class UpdateCheckerManager {
                 WAIT_FOR_UPDATES_FINISHED.countDown();
             }
         }.start();
+    }
+
+    /**
+     * Returns true if a new LMH01_lib version is available.
+     * @return
+     */
+    public static boolean isNewLMH01_libVersionAvailable(){
+        return newLMH01_libVersionAvailable;
+    }
+
+    /**
+     * Returns the newest available LMH01_lib version.
+     * @return
+     */
+    public static String getNewestLMH01_libVersion(){
+        return newestLMH01_libVersion;
     }
 
     /**

@@ -6,7 +6,8 @@ import java.util.ArrayList;
 public class ErrorHelper {
     private static int Errors = 0;
     private static final ArrayList<String> LIST_OF_ERRORS = new ArrayList<>();
-    public static final int ERROR_TEXT_BODY_POSITION = DebugHelper.addCommonTextBody("An Error occurred: ");
+    public static final int ERROR_TEXT_BODY_POSITION = DebugHelper.addCommonTextBody("Error: ");
+    //TODO Add a system that sends a chat message to the player when a error occurs during the game.
     /**
      * ModID will be defaulted as lmh01_lib
      * This function will register the error inside an array. The error will also be shown in the console.
@@ -15,6 +16,7 @@ public class ErrorHelper {
     public static void addError(String Description){
         addError(Description, References.MODID);
     }
+
     /**
      * This function will register the error inside an array. The error will also be shown in the console.
      * @param description The description of the error.
@@ -39,6 +41,7 @@ public class ErrorHelper {
         DebugHelper.sendDebugInformation(description, 4, ERROR_TEXT_BODY_POSITION);
         DebugHelper.sendException(exception, modid);
     }
+
     /**
      * This function will return all registered errors as a string. Per line one warning. Sorted in the way the errors have been registered.
      */
@@ -50,12 +53,14 @@ public class ErrorHelper {
         DebugHelper.sendDebugInformation("List of all errors has been created", 4);
         return CompletedListOfWarnings;
     }
+
     /**
      * This function will return all registered errors as array.
      */
     public static ArrayList<String> getListOfErrorsAsArray(){
         return LIST_OF_ERRORS;
     }
+
     /**
      * This function will return the amount of registered warnings.
      */

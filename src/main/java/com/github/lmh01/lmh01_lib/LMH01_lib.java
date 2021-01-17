@@ -10,8 +10,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(References.MODID)
 public class LMH01_lib {
-    public static boolean runningOnClientSide = false;
-    public static boolean isRunningOnClientSideConfirmed = false;
+    private static boolean runningOnClientSide = false;
+
     public LMH01_lib() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientRegistries);
@@ -22,7 +22,7 @@ public class LMH01_lib {
     private void setup(final FMLCommonSetupEvent event) {
         DebugHelper.sendDebugInformation("Beginning Pre-Init", 4);
         //TODO Write config file
-        Debug.registerSomeTestModsAndAddons();
+        //Debug.registerSomeTestModsAndAddons();
         DebugHelper.sendDebugInformation("Working Directory = " + System.getProperty("user.dir"), 4);
     }
 
@@ -34,15 +34,20 @@ public class LMH01_lib {
 
     /*Used to be Post-Init*/
     private void processIMC(final InterModProcessEvent event) {
-        if(runningOnClientSide){
-            isRunningOnClientSideConfirmed = true;
-        }
         DebugHelper.sendDebugInformation("Starting postInit",4);
         //TODO decide if i should keep the news loader and if yes implement it
+        SubModManager.setAllModsRegistered();
         UpdateCheckerManager.checkForUpdates();
         Thread thread = new Thread(UpdateCheckerManager.RUNNABLE_WAIT_FOR_UPDATES_FINISHED_AND_SEND_LOADING_SUMMARY);
         thread.start();
         DebugHelper.sendDebugInformation("LMH01_lib loading complete:",4);
     }
 
+    /**
+     * Returns true if the mod is running on the client side.
+     * @return
+     */
+    public static boolean isRunningOnClientSide(){
+        return runningOnClientSide;
+    }
 }
