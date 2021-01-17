@@ -29,7 +29,7 @@ public class WebHelper {
     }
     /**
      * Does not work as intended. Might be removed in a future build.
-     * Use {@link ChatHelper#sendClickableLink(String, String)} or {@link ChatHelper#sendTranslatedClickableLink(String, TextFormatting, String)} to print a clickable message into the chat with which a website can be opened.
+     * Use {@link ChatHelper#sendTranslatedChatMessage(String, TextFormatting, String)} or {@link ChatHelper#sendTranslatedChatMessage(String, TextFormatting, String, String)} to send a clickable message to the user that opens a website.
      * Opens a new browserTab with given url
      * @param url the url
      * @return returns true if the operation was successful

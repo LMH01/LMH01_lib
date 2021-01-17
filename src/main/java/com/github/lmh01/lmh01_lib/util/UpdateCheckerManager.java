@@ -80,7 +80,7 @@ public class UpdateCheckerManager {
                 ChatHelper.sendTranslatedChatMessage("text.lmh01.updates_available", TextFormatting.GOLD);
             }
             if(newLMH01_libVersionAvailable){
-                ChatHelper.sendClickableLinkWithTranslatedToolTip(TextFormatting.GOLD + "LMH01_lib (" + References.VERSION + "): " + TextFormatting.DARK_AQUA + UpdateCheckerManager.newestLMH01_libVersion, References.DOWNLOAD_URL, "tooltip.click_to_open_lmh01_lib_download_page");
+                ChatHelper.sendChatMessage(TextFormatting.GOLD + "LMH01_lib (" + References.VERSION + "): " + TextFormatting.DARK_AQUA + UpdateCheckerManager.newestLMH01_libVersion, References.DOWNLOAD_URL, "tooltip.click_to_open_lmh01_lib_download_page");
             }
             SubModManager.printSummary(true, true, false);
             ChatHelper.sendTranslatedChatMessage("text.lmh01.click_version_hint", TextFormatting.GRAY);

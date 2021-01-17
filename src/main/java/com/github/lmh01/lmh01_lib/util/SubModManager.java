@@ -113,7 +113,6 @@ public class SubModManager {
             if(ingame){
                 ChatHelper.sendChatMessage(TextFormatting.DARK_GREEN + "Addons: ");
                 for (int i = 0; i < SubModManager.getModAddonCount(); i++){
-                    //TODO Add TextFormatting
                     ChatHelper.sendChatMessage(TextFormatting.GOLD + SubModManager.REGISTERED_ADDONS.get(i));
                 }
             }else{

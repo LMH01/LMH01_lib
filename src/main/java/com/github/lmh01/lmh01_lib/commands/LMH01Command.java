@@ -43,9 +43,9 @@ public class LMH01Command {
     }
     private static int castLinksSubCommand(){
         ChatHelper.sendTranslatedChatMessage("commands.lmh01.links.firstLine", TextFormatting.DARK_GREEN);
-        ChatHelper.sendTranslatedClickableLinkWithTranslatedToolTip("commands.lmh01.links.lmh01_lib_on_curseforge", TextFormatting.GOLD, References.MOD_WEBSITE_URL, "commands.lmh01.links.lmh01_lib_on_curseforge.tooltip");
-        ChatHelper.sendTranslatedClickableLinkWithTranslatedToolTip("commands.lmh01.links.lmh01_lib_on_github", TextFormatting.GOLD, References.MOD_GITHUB_URL, "commands.lmh01.links.lmh01_lib_on_github.tooltip");
-        ChatHelper.sendTranslatedClickableLinkWithTranslatedToolTip("commands.lmh01.links.lmh01_mods_on_twitter", TextFormatting.GOLD, References.LMH01_MODS_ON_TWITTER, "commands.lmh01.links.lmh01_mods_on_twitter.tooltip");
+        ChatHelper.sendTranslatedChatMessage("commands.lmh01.links.lmh01_lib_on_curseforge", TextFormatting.GOLD, References.MOD_WEBSITE_URL, "commands.lmh01.links.lmh01_lib_on_curseforge.tooltip");
+        ChatHelper.sendTranslatedChatMessage("commands.lmh01.links.lmh01_lib_on_github", TextFormatting.GOLD, References.MOD_GITHUB_URL, "commands.lmh01.links.lmh01_lib_on_github.tooltip");
+        ChatHelper.sendTranslatedChatMessage("commands.lmh01.links.lmh01_mods_on_twitter", TextFormatting.GOLD, References.LMH01_MODS_ON_TWITTER, "commands.lmh01.links.lmh01_mods_on_twitter.tooltip");
         return 1;
     }
     private static int castModsSubCommand(){
