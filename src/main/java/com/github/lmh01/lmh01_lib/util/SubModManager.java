@@ -2,12 +2,8 @@ package com.github.lmh01.lmh01_lib.util;
 
 import com.github.lmh01.lmh01_lib.helpers.ChatHelper;
 import com.github.lmh01.lmh01_lib.helpers.DebugHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.HoverEvent;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -87,8 +83,7 @@ public class SubModManager {
                             tempStorageModName = tempStorageModName.replace(SubModManager.REGISTERED_MODS.get(n),"");
                             tempStorageNewVersion = tempStorageNewVersion.replace(SubModManager.REGISTERED_MODS.get(n),"");
                             final String tempStorageDownloadURLToUse = tempStorageDownloadURL.replace(SubModManager.REGISTERED_MODS.get(n), "");
-
-                            Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.GOLD + tempStorageModName + TextFormatting.DARK_AQUA + tempStorageNewVersion).modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, tempStorageDownloadURLToUse))).modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.click_to_open_mod_download_website")))), Minecraft.getInstance().player.getUniqueID());
+                            ChatHelper.sendChatMessage(TextFormatting.GOLD + tempStorageModName + TextFormatting.DARK_AQUA + tempStorageNewVersion, tempStorageDownloadURLToUse, "tooltip.click_to_open_mod_download_website");
                         }else{
                             String tempStorage = SubModManager.REGISTERED_MOD_NAMES.get(i) + " (" + SubModManager.REGISTERED_MODS.get(n+2) + "): Update available - " + UpdateCheckerManager.NEWEST_VERSION.get(i) + "; Download: " + SubModManager.DOWNLOAD_URLS.get(i).replace(SubModManager.REGISTERED_MODS.get(i), "");
                             /*When printing this into the chat the new version number will will be clickable to open the update side*/
@@ -99,7 +94,7 @@ public class SubModManager {
                         if(ingame){
                             String tempStorageDownloadURL = SubModManager.DOWNLOAD_URLS.get(i);
                             final String tempStorageDownloadURLToUse = tempStorageDownloadURL.replace(SubModManager.REGISTERED_MODS.get(n), "");
-                            Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.GOLD + SubModManager.REGISTERED_MOD_NAMES.get(i) + " (" + SubModManager.REGISTERED_MODS.get(n+2) + "): " + TextFormatting.DARK_GREEN + "Installed").modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, tempStorageDownloadURLToUse))).modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.click_to_open_mod_download_website")))), Minecraft.getInstance().player.getUniqueID());
+                            ChatHelper.sendChatMessage(TextFormatting.GOLD + SubModManager.REGISTERED_MOD_NAMES.get(i) + " (" + SubModManager.REGISTERED_MODS.get(n+2) + "): " + TextFormatting.DARK_GREEN + "Installed", tempStorageDownloadURLToUse, "tooltip.click_to_open_mod_download_website");
                         }else{
                             DebugHelper.sendDebugInformation(SubModManager.REGISTERED_MOD_NAMES.get(i) + " (" + SubModManager.REGISTERED_MODS.get(n+2) + "): Installed", 5);
                         }

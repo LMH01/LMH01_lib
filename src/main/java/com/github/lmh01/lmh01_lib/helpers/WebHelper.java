@@ -4,7 +4,6 @@ import com.github.lmh01.lmh01_lib.util.References;
 import net.minecraft.util.text.TextFormatting;
 import java.awt.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 

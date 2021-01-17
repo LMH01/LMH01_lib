@@ -94,7 +94,7 @@ public class UpdateCheckerManager {
         DebugHelper.sendDebugInformation("newestLMH01_libVersion: " + newestLMH01_libVersion,5);
         DebugHelper.sendDebugInformation("currentLMH01_libVersion: " + References.VERSION,5);
         if(References.VERSION.equals(newestLMH01_libVersion)){
-            ChatHelper.sendCommandFeedback(TextFormatting.GOLD + "Current LMH01_lib version: " + TextFormatting.DARK_GREEN + References.VERSION, source);
+            CommandHelper.sendCommandFeedback(TextFormatting.GOLD + "Current LMH01_lib version: " + TextFormatting.DARK_GREEN + References.VERSION, source, true);
         }else{
             Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.GOLD + "Current LMH01_lib version: " + TextFormatting.YELLOW + References.VERSION + TextFormatting.GOLD + "\nThis version is " + TextFormatting.RED + "Outdated!" + TextFormatting.GOLD + " Click this message to open the download page.").modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, References.DOWNLOAD_URL))).modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.click_to_open_lmh01_lib_download_page")))), Minecraft.getInstance().player.getUniqueID());
         }

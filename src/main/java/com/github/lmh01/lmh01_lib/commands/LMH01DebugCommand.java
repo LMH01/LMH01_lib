@@ -1,11 +1,13 @@
 package com.github.lmh01.lmh01_lib.commands;
 
+import com.github.lmh01.lmh01_lib.helpers.CommandHelper;
 import com.github.lmh01.lmh01_lib.util.SubModManager;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
+import net.minecraft.command.ICommandSource;
 import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,6 +32,12 @@ public class LMH01DebugCommand {
     }
     private static int lmh01(CommandSource source, PlayerEntity player, String color){
         source.sendFeedback(new TranslationTextComponent("commands.lmh01_test.color", TextFormatting.getValueByName(color).toString(), player.getDisplayName()), true);
+        return 1;
+    }
+    private static int testPart(CommandSource source, ICommandSource iCommandSource){
+        if(iCommandSource instanceof PlayerEntity){
+            CommandHelper.sendCommandFeedback("It Worked", source, true);
+        }
         return 1;
     }
 }
