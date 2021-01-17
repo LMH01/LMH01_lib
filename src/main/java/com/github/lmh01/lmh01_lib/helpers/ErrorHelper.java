@@ -1,16 +1,19 @@
 package com.github.lmh01.lmh01_lib.helpers;
 
 import com.github.lmh01.lmh01_lib.util.References;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextFormatting;
+
 import java.util.ArrayList;
 
 public class ErrorHelper {
     private static int Errors = 0;
     private static final ArrayList<String> LIST_OF_ERRORS = new ArrayList<>();
-    public static final int ERROR_TEXT_BODY_POSITION = DebugHelper.addCommonTextBody("Error: ");
-    //TODO Add a system that sends a chat message to the player when a error occurs during the game.
+    //TODO Make a config setting to enable/disable the sending of errors into the chat.
     /**
      * ModID will be defaulted as lmh01_lib
      * This function will register the error inside an array. The error will also be shown in the console.
+     * If the player currently in game the error will be printed into the chat.
      * @param Description - The description of the error.
      */
     public static void addError(String Description){
@@ -19,13 +22,21 @@ public class ErrorHelper {
 
     /**
      * This function will register the error inside an array. The error will also be shown in the console.
+     * If the player currently in game the error will be printed into the chat.
      * @param description The description of the error.
      * @param ModID The modid from which the error has been sent.
      */
     public static void addError(String description, String ModID){
         LIST_OF_ERRORS.add(ModID + ": " + description);
+        try {
+            if(Minecraft.getInstance().player != null){
+                ChatHelper.sendChatMessage(TextFormatting.RED + "Error: " + description);
+            }
+        }catch (Exception e){
+
+        }
         Errors++;
-        DebugHelper.sendDebugInformation(description, 4, ERROR_TEXT_BODY_POSITION);
+        DebugHelper.sendDebugInformation(description, 2);
     }
 
     /**
@@ -36,9 +47,16 @@ public class ErrorHelper {
      * @param exception The exception.
      */
     public static void addError(String description, String modid, Exception exception){
-        LIST_OF_ERRORS.add(modid + ": " + description + "");
+        LIST_OF_ERRORS.add(modid + ": " + description);
+        try {
+            if(Minecraft.getInstance().player != null){
+                ChatHelper.sendChatMessage(TextFormatting.RED + "Error: " + description);
+            }
+        }catch (Exception e){
+
+        }
         Errors++;
-        DebugHelper.sendDebugInformation(description, 4, ERROR_TEXT_BODY_POSITION);
+        DebugHelper.sendDebugInformation(description, 4);
         DebugHelper.sendException(exception, modid);
     }
 
