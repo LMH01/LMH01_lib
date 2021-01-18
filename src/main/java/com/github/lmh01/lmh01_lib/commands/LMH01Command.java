@@ -1,6 +1,7 @@
 package com.github.lmh01.lmh01_lib.commands;
 
 import com.github.lmh01.lmh01_lib.LMH01_lib;
+import com.github.lmh01.lmh01_lib.helpers.ChatHelper;
 import com.github.lmh01.lmh01_lib.helpers.CommandHelper;
 import com.github.lmh01.lmh01_lib.helpers.DebugHelper;
 import com.github.lmh01.lmh01_lib.util.ChildModManager;
@@ -36,7 +37,7 @@ public class LMH01Command {
           .then(Commands.literal("mods").executes(source -> castModsSubCommand(source.getSource()))));
     }
     private static int castConfigSubCommand(CommandSource source){
-        CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.config.config_not_available", TextFormatting.RED, source, true);
+        CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.config.config_not_available", TextFormatting.RED, source, true);
         return 1;
     }
     private static int castVersionSubCommand(CommandSource source){
@@ -53,12 +54,12 @@ public class LMH01Command {
          *  Because this does not work the player will get the same message as the console when playing on a server.
          */
         if(LMH01_lib.isRunningOnClientSide()){
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.links.firstLine", TextFormatting.DARK_GREEN, source,true, References.MOD_WEBSITE_URL, "commands.lmh01.links.lmh01_lib_on_curseforge.tooltip");
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.links.lmh01_lib_on_curseforge", TextFormatting.GOLD, source,true, References.MOD_WEBSITE_URL, "commands.lmh01.links.lmh01_lib_on_curseforge.tooltip");
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.links.lmh01_lib_on_github", TextFormatting.GOLD, source, true, References.MOD_GITHUB_URL, "commands.lmh01.links.lmh01_lib_on_github.tooltip");
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.links.lmh01_mods_on_twitter", TextFormatting.GOLD, source, true, References.LMH01_MODS_ON_TWITTER, "commands.lmh01.links.lmh01_mods_on_twitter.tooltip");
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.firstLine", TextFormatting.DARK_GREEN, source,true, References.MOD_WEBSITE_URL, "commands.lmh01.links.lmh01_lib_on_curseforge.tooltip");
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.lmh01_lib_on_curseforge", TextFormatting.GOLD, source,true, References.MOD_WEBSITE_URL, "commands.lmh01.links.lmh01_lib_on_curseforge.tooltip");
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.lmh01_lib_on_github", TextFormatting.GOLD, source, true, References.MOD_GITHUB_URL, "commands.lmh01.links.lmh01_lib_on_github.tooltip");
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.lmh01_mods_on_twitter", TextFormatting.GOLD, source, true, References.LMH01_MODS_ON_TWITTER, "commands.lmh01.links.lmh01_mods_on_twitter.tooltip");
         }else{
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.links.firstLine", source, true);
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.firstLine", source, true);
             CommandHelper.sendCommandFeedback("LMH01_lib on Curseforge: " + References.MOD_WEBSITE_URL, source, true);
             CommandHelper.sendCommandFeedback("LMH01_lib on Github: " + References.MOD_GITHUB_URL, source, true);
             CommandHelper.sendCommandFeedback("LMH01_lib on Twitter: " + References.LMH01_MODS_ON_TWITTER, source, true);
@@ -67,30 +68,31 @@ public class LMH01Command {
     }
     private static int castModsSubCommand(CommandSource source){
         if(ChildModManager.getModCount()==0 && ChildModManager.getModAddonCount()==0){
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.mods.firstLine_without_mods", TextFormatting.DARK_GREEN, source, true);
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.mods.firstLine_without_mods", TextFormatting.DARK_GREEN, source, true);
         }else{
-           CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.mods.firstLine_with_mods", TextFormatting.DARK_GREEN, source, true);
             if(LMH01_lib.isRunningOnClientSide()){
+                ChatHelper.sendTranslatedChatMessage("commands.lmh01_lib.mods.firstLine_with_mods", TextFormatting.DARK_GREEN);
                 ChildModManager.printSummary(true, false,true);
             }else{
+                CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.mods.firstLine_with_mods", TextFormatting.DARK_GREEN, source, true);
                 ChildModManager.printSummary(false, false,true);
             }
-            CommandHelper.sendTranslatedCommandFeedback("text.lmh01.click_version_hint", TextFormatting.GRAY, source, true);
+            CommandHelper.sendTranslatedCommandFeedback("text.lmh01_lib.click_version_hint", TextFormatting.GRAY, source, true);
         }
         return 1;
     }
     private static int castHelpSubCommand(int page, CommandSource source){
         if (page == 1) {
             /*6 commands per help site*/
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.help.help_page_1", TextFormatting.AQUA, source, true);
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.help.help", TextFormatting.DARK_GREEN, source, true);
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.help.config", TextFormatting.DARK_GREEN, source, true);
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.help.version", TextFormatting.DARK_GREEN, source, true);
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.help.links", TextFormatting.DARK_GREEN, source, true);
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.help.mods", TextFormatting.DARK_GREEN, source, true);
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.help.help_page_1", TextFormatting.AQUA, source, true);
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.help.help", TextFormatting.DARK_GREEN, source, true);
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.help.config", TextFormatting.DARK_GREEN, source, true);
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.help.version", TextFormatting.DARK_GREEN, source, true);
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.help.links", TextFormatting.DARK_GREEN, source, true);
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.help.mods", TextFormatting.DARK_GREEN, source, true);
         }else if (page == 2) {
             /*This can be reactivated once i need a second page*/
-            //CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.help.help_page_2", TextFormatting.AQUA, source, true);
+            //CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.help.help_page_2", TextFormatting.AQUA, source, true);
         }
         return 1;
     }

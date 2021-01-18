@@ -24,10 +24,10 @@ public class ErrorHelper {
      * This function will register the error inside an array. The error will also be shown in the console.
      * If the player currently in game the error will be printed into the chat.
      * @param description The description of the error.
-     * @param ModID The modid from which the error has been sent.
+     * @param modid The modid from which the error has been sent.
      */
-    public static void addError(String description, String ModID){
-        LIST_OF_ERRORS.add(ModID + ": " + description);
+    public static void addError(String description, String modid){
+        LIST_OF_ERRORS.add(modid + ": " + description);
         try {
             if(Minecraft.getInstance().player != null){
                 ChatHelper.sendChatMessage(TextFormatting.RED + "Error: " + description);

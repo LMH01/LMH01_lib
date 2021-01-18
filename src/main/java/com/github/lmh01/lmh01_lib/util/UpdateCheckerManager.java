@@ -1,7 +1,6 @@
 package com.github.lmh01.lmh01_lib.util;
 
 import com.github.lmh01.lmh01_lib.helpers.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandSource;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -149,18 +148,18 @@ public class UpdateCheckerManager {
     public static void printChatNotification(boolean calledFromEvents){
         if(ChildModManager.getModCount()!=0 && UpdateCheckerManager.numberOfAvailableUpdates!=0 ||newLMH01_libVersionAvailable){
             if(UpdateCheckerManager.numberOfAvailableUpdates==1){
-                ChatHelper.sendTranslatedChatMessage("text.lmh01.update_available", TextFormatting.GOLD);
+                ChatHelper.sendTranslatedChatMessage("text.lmh01_lib.update_available", TextFormatting.GOLD);
             }else{
-                ChatHelper.sendTranslatedChatMessage("text.lmh01.updates_available", TextFormatting.GOLD);
+                ChatHelper.sendTranslatedChatMessage("text.lmh01_lib.updates_available", TextFormatting.GOLD);
             }
             if(newLMH01_libVersionAvailable){
-                ChatHelper.sendChatMessage(TextFormatting.GOLD + "LMH01_lib (" + References.VERSION + "): " + TextFormatting.DARK_AQUA + UpdateCheckerManager.newestLMH01_libVersion, References.DOWNLOAD_URL, "tooltip.click_to_open_lmh01_lib_download_page");
+                ChatHelper.sendChatMessage(TextFormatting.GOLD + "LMH01_lib (" + References.VERSION + "): " + TextFormatting.DARK_AQUA + UpdateCheckerManager.newestLMH01_libVersion, References.DOWNLOAD_URL, "tooltip.lmh01_lib.click_to_open_lmh01_lib_download_page");
             }
             ChildModManager.printSummary(true, true, false);
-            ChatHelper.sendTranslatedChatMessage("text.lmh01.click_version_hint", TextFormatting.GRAY);
+            ChatHelper.sendTranslatedChatMessage("text.lmh01_lib.click_version_hint", TextFormatting.GRAY);
         }else{
             if(!calledFromEvents){
-                ChatHelper.sendTranslatedChatMessage("text.lmh01.no_updates_available", TextFormatting.GREEN);
+                ChatHelper.sendTranslatedChatMessage("text.lmh01_lib.no_updates_available", TextFormatting.GREEN);
             }
         }
     }
@@ -170,7 +169,7 @@ public class UpdateCheckerManager {
         if(References.VERSION.equals(newestLMH01_libVersion)){
             CommandHelper.sendCommandFeedback(TextFormatting.GOLD + "Current LMH01_lib version: " + TextFormatting.DARK_GREEN + References.VERSION, source, true);
         }else{
-            Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.GOLD + "Current LMH01_lib version: " + TextFormatting.YELLOW + References.VERSION + TextFormatting.GOLD + "\nThis version is " + TextFormatting.RED + "Outdated!" + TextFormatting.GOLD + " Click this message to open the download page.").modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, References.DOWNLOAD_URL))).modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.click_to_open_lmh01_lib_download_page")))), Minecraft.getInstance().player.getUniqueID());
+            source.sendFeedback(new StringTextComponent(TextFormatting.GOLD + "Current LMH01_lib version: " + TextFormatting.YELLOW + References.VERSION + TextFormatting.GOLD + "\nThis version is " + TextFormatting.RED + "Outdated!" + TextFormatting.GOLD + " Click this message to open the download page.").modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, References.DOWNLOAD_URL))).modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.click_to_open_lmh01_lib_download_page")))), true);
         }
     }
 

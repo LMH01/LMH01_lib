@@ -3,28 +3,33 @@ package com.github.lmh01.lmh01_lib.util;
 import com.github.lmh01.lmh01_lib.helpers.ChatHelper;
 import com.github.lmh01.lmh01_lib.helpers.DebugHelper;
 import com.github.lmh01.lmh01_lib.helpers.WarningHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.HoverEvent;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 public class ChildModManager {
     private static final ArrayList<String> REGISTERED_MODS = new ArrayList<>();
     private static final ArrayList<String> REGISTERED_ADDONS = new ArrayList<>();
     private static final ArrayList<String> REGISTERED_MOD_NAMES = new ArrayList<>();
     private static final ArrayList<String> DOWNLOAD_URLS = new ArrayList<>();
+    private static final ArrayList<String> OFFICIAL_MODS = new ArrayList<>();
     private static final ArrayList<String> NEWEST_VERSION = UpdateCheckerManager.getNewestVersionArrayList();
     private static final ArrayList<String> UPDATE_AVAILABLE = UpdateCheckerManager.getUpdateAvailableArrayList();
     private static int modsCount = 0;
     private static int modAddonCount = 0;
-    private static boolean allModsRegistered = false;
+    private static boolean childModRegisteringClosed = false;
     /*
      * This class is used for integration with the mods that depend on lmh01_lib
      * */
 
-    //TODO Create a feature that gets all official child mod (official=child mods created by lmh01) names and compares them to the registered child mods.
-    // Displays a special "mark" in Loading Summary and in /lmh01 mods. Mark could be "(official)" or (L) in green. Hovering over L could reveal tooltip: "Official mod by LMH01"
-    // The message in the chat could look like this: "Trek Craft (1.16.4-0.1.0)(O): Installed".
     /**
      * Use this function to register a new Child Mod to LMH01_lib. When registering a new Child Mod the mod will be
      * checked for updates and will be present in the loading summary. Other integrations might be added later. Only works until post-init (InterModProcessEvent) is started.
@@ -36,7 +41,7 @@ public class ChildModManager {
      * @param downloadURL The URL where the download is available
      */
     public static void registerChildMod(String modid, String name, String version, String updateURL, String downloadURL){
-        if(!allModsRegistered){
+        if(!childModRegisteringClosed){
             modsCount++;
             DebugHelper.sendDebugInformation("Registering new Child Mod: modid: " + modid + ", name: " + name + ", version: " + version + ", updateURL: " + updateURL + ", downloadURL: " + downloadURL, 4);
             REGISTERED_MODS.add(modid);
@@ -63,12 +68,38 @@ public class ChildModManager {
         REGISTERED_ADDONS.add(name);
     }
 
+
+    public static void checkForOfficialChildMods(){
+        new Thread("LMH01_lib: Check for official child mods"){
+            public void run() {
+                try {
+                    java.net.URL url = new URL(References.OFFICIAL_MOD_LIST_URL);
+                    Scanner scanner = new Scanner(url.openStream());
+                    while(scanner.hasNextLine()){
+                        int modidPosition = 0;
+                        String currentLine = scanner.nextLine();
+                        DebugHelper.sendDebugInformation("Current line: " + currentLine, 5);
+                        for(int i=1; i<= modsCount; i++){
+                            if(currentLine.equals(REGISTERED_MODS.get(modidPosition))){
+                                DebugHelper.sendDebugInformation("Adding '" + REGISTERED_MODS.get(modidPosition) + "' to the OFFICIAL_MODS array.", 5);
+                                OFFICIAL_MODS.add(REGISTERED_MODS.get(modidPosition));
+                            }
+                            modidPosition = modidPosition + 4;
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
     /**
      *  Call this function to prevent future mods from registering to LMH01_lib.
      *  Useful to stop mods from registering when Minecraft loading is complete to prevent errors.
      */
-    public static void setAllModsRegistered(){
-        allModsRegistered = true;
+    public static void setChildModRegisteringClosed(){
+        childModRegisteringClosed = true;
     }
 
     /**
@@ -76,7 +107,7 @@ public class ChildModManager {
      * @return Returns if all mods are registered.
      */
     public static boolean areAllModsRegistered(){
-        return allModsRegistered;
+        return childModRegisteringClosed;
     }
 
     /**
@@ -122,13 +153,27 @@ public class ChildModManager {
                 if(REGISTERED_MOD_NAMES.get(i).equals(REGISTERED_MODS.get(n+1))){
                     if(UPDATE_AVAILABLE.get(i).contains("true")){
                         if(ingame){
-                            String tempStorageModName = REGISTERED_MOD_NAMES.get(i) + " (" + REGISTERED_MODS.get(n+2) + "): ";
+                            String tempStorageModName = REGISTERED_MOD_NAMES.get(i);
                             String tempStorageNewVersion = NEWEST_VERSION.get(i);
                             String tempStorageDownloadURL = DOWNLOAD_URLS.get(i);
                             tempStorageModName = tempStorageModName.replace(REGISTERED_MODS.get(n),"");
                             tempStorageNewVersion = tempStorageNewVersion.replace(REGISTERED_MODS.get(n),"");
                             final String tempStorageDownloadURLToUse = tempStorageDownloadURL.replace(REGISTERED_MODS.get(n), "");
-                            ChatHelper.sendChatMessage(TextFormatting.GOLD + tempStorageModName + TextFormatting.DARK_AQUA + tempStorageNewVersion, tempStorageDownloadURLToUse, "tooltip.click_to_open_mod_download_website");
+                            if(OFFICIAL_MODS.contains(REGISTERED_MODS.get(n))){
+                                Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.DARK_GRAY + "[" + TextFormatting.DARK_GREEN + "O" + TextFormatting.DARK_GRAY + "] ")
+                                        .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.official_lmh01_mod"))))
+                                        .append(new StringTextComponent(TextFormatting.GOLD + tempStorageModName + ": " + TextFormatting.DARK_AQUA + tempStorageNewVersion)
+                                                .modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,tempStorageDownloadURLToUse)))
+                                                .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.click_to_open_mod_download_website")))))
+                                        , Minecraft.getInstance().player.getUniqueID());
+                            }else{
+                                Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.DARK_GRAY + "[" + TextFormatting.YELLOW + "U" + TextFormatting.DARK_GRAY + "] ")
+                                                .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.no_official_lmh01_mod"))))
+                                                .append(new StringTextComponent(TextFormatting.GOLD + tempStorageModName + ": " + TextFormatting.DARK_AQUA + tempStorageNewVersion)
+                                                        .modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,tempStorageDownloadURLToUse)))
+                                                        .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.click_to_open_mod_download_website")))))
+                                        , Minecraft.getInstance().player.getUniqueID());
+                            }
                         }else{
                             String tempStorage = REGISTERED_MOD_NAMES.get(i) + " (" + REGISTERED_MODS.get(n+2) + "): Update available - " + NEWEST_VERSION.get(i) + "; Download: " + DOWNLOAD_URLS.get(i).replace(REGISTERED_MODS.get(i), "");
                             /*When printing this into the chat the new version number will will be clickable to open the update side*/
@@ -139,7 +184,21 @@ public class ChildModManager {
                         if(ingame){
                             String tempStorageDownloadURL = DOWNLOAD_URLS.get(i);
                             final String tempStorageDownloadURLToUse = tempStorageDownloadURL.replace(REGISTERED_MODS.get(n), "");
-                            ChatHelper.sendChatMessage(TextFormatting.GOLD + REGISTERED_MOD_NAMES.get(i) + " (" + REGISTERED_MODS.get(n+2) + "): " + TextFormatting.DARK_GREEN + "Installed", tempStorageDownloadURLToUse, "tooltip.click_to_open_mod_download_website");
+                            if(OFFICIAL_MODS.contains(REGISTERED_MODS.get(n))){
+                                Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.DARK_GRAY + "[" + TextFormatting.DARK_GREEN + "O" + TextFormatting.DARK_GRAY + "] ")
+                                                .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.official_lmh01_mod"))))
+                                                .append(new StringTextComponent(TextFormatting.GOLD + REGISTERED_MOD_NAMES.get(i) + " (" + REGISTERED_MODS.get(n+2) + "): " + TextFormatting.DARK_GREEN + "Installed")
+                                                        .modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,tempStorageDownloadURLToUse)))
+                                                        .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.click_to_open_mod_download_website")))))
+                                        , Minecraft.getInstance().player.getUniqueID());
+                            }else{
+                                Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.DARK_GRAY + "[" + TextFormatting.YELLOW + "U" + TextFormatting.DARK_GRAY + "] ")
+                                                .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.no_official_lmh01_mod"))))
+                                                .append(new StringTextComponent(TextFormatting.GOLD + REGISTERED_MOD_NAMES.get(i) + " (" + REGISTERED_MODS.get(n+2) + "): " + TextFormatting.DARK_GREEN + "Installed")
+                                                        .modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,tempStorageDownloadURLToUse)))
+                                                        .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.click_to_open_mod_download_website")))))
+                                        , Minecraft.getInstance().player.getUniqueID());
+                            }
                         }else{
                             DebugHelper.sendDebugInformation(REGISTERED_MOD_NAMES.get(i) + " (" + REGISTERED_MODS.get(n+2) + "): Installed", 5);
                         }
