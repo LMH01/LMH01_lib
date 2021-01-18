@@ -165,14 +165,14 @@ public class ChildModManager {
                             if(OFFICIAL_MODS.contains(REGISTERED_MODS.get(n))){
                                 Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.DARK_GRAY + "[" + TextFormatting.DARK_GREEN + "O" + TextFormatting.DARK_GRAY + "] ")
                                         .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.official_lmh01_mod"))))
-                                        .append(new StringTextComponent(TextFormatting.GOLD + tempStorageModName + ": " + TextFormatting.DARK_AQUA + tempStorageNewVersion)
+                                        .append(new StringTextComponent(TextFormatting.GOLD + tempStorageModName + " (" + REGISTERED_MODS.get(n+2) + "): " + TextFormatting.DARK_AQUA + tempStorageNewVersion)
                                                 .modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,tempStorageDownloadURLToUse)))
                                                 .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.click_to_open_mod_download_website")))))
                                         , Minecraft.getInstance().player.getUniqueID());
                             }else{
                                 Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.DARK_GRAY + "[" + TextFormatting.YELLOW + "U" + TextFormatting.DARK_GRAY + "] ")
                                                 .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.no_official_lmh01_mod"))))
-                                                .append(new StringTextComponent(TextFormatting.GOLD + tempStorageModName + ": " + TextFormatting.DARK_AQUA + tempStorageNewVersion)
+                                                .append(new StringTextComponent(TextFormatting.GOLD + tempStorageModName + " (" + REGISTERED_MODS.get(n+2) + "): " + TextFormatting.DARK_AQUA + tempStorageNewVersion)
                                                         .modifyStyle(style -> style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,tempStorageDownloadURLToUse)))
                                                         .modifyStyle(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("tooltip.lmh01_lib.click_to_open_mod_download_website")))))
                                         , Minecraft.getInstance().player.getUniqueID());

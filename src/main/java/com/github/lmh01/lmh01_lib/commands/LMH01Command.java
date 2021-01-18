@@ -54,10 +54,10 @@ public class LMH01Command {
          *  Because this does not work the player will get the same message as the console when playing on a server.
          */
         if(LMH01_lib.isRunningOnClientSide()){
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.firstLine", TextFormatting.DARK_GREEN, source,true, References.MOD_WEBSITE_URL, "commands.lmh01.links.lmh01_lib_on_curseforge.tooltip");
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.lmh01_lib_on_curseforge", TextFormatting.GOLD, source,true, References.MOD_WEBSITE_URL, "commands.lmh01.links.lmh01_lib_on_curseforge.tooltip");
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.lmh01_lib_on_github", TextFormatting.GOLD, source, true, References.MOD_GITHUB_URL, "commands.lmh01.links.lmh01_lib_on_github.tooltip");
-            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.lmh01_mods_on_twitter", TextFormatting.GOLD, source, true, References.LMH01_MODS_ON_TWITTER, "commands.lmh01.links.lmh01_mods_on_twitter.tooltip");
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.firstLine", TextFormatting.DARK_GREEN, source, true);
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.lmh01_lib_on_curseforge", TextFormatting.GOLD, source,true, References.MOD_WEBSITE_URL, "commands.lmh01_lib.links.lmh01_lib_on_curseforge.tooltip");
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.lmh01_lib_on_github", TextFormatting.GOLD, source, true, References.MOD_GITHUB_URL, "commands.lmh01.lmh01_lib.lmh01_lib_on_github.tooltip");
+            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.lmh01_mods_on_twitter", TextFormatting.GOLD, source, true, References.LMH01_MODS_ON_TWITTER, "commands.lmh01_lib.links.lmh01_mods_on_twitter.tooltip");
         }else{
             CommandHelper.sendTranslatedCommandFeedback("commands.lmh01_lib.links.firstLine", source, true);
             CommandHelper.sendCommandFeedback("LMH01_lib on Curseforge: " + References.MOD_WEBSITE_URL, source, true);

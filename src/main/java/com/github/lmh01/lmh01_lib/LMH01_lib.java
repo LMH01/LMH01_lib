@@ -22,7 +22,7 @@ public class LMH01_lib {
     private void setup(final FMLCommonSetupEvent event) {
         DebugHelper.sendDebugInformation("Beginning Pre-Init", 4);
         //TODO Write config file
-        Debug.registerSomeTestModsAndAddons();
+        //Debug.registerSomeTestModsAndAddons();
         DebugHelper.sendDebugInformation("Working Directory = " + System.getProperty("user.dir"), 4);
     }
 
