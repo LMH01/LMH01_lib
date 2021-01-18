@@ -1,6 +1,7 @@
 package com.github.lmh01.lmh01_lib.commands;
 
 import com.github.lmh01.lmh01_lib.helpers.CommandHelper;
+import com.github.lmh01.lmh01_lib.util.Debug;
 import com.github.lmh01.lmh01_lib.util.SubModManager;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -22,7 +23,8 @@ public class LMH01DebugCommand {
     public static void register(CommandDispatcher<CommandSource> dispatcher){
         dispatcher.register(Commands.literal("lmh01_debug").executes(source -> lmh01(source.getSource(), source.getSource().asPlayer()))
                 .then(Commands.argument("target", EntityArgument.player()).executes(source -> lmh01(source.getSource(), EntityArgument.getPlayer(source, "target"))))
-                .then(Commands.argument("color", StringArgumentType.string()).suggests(SUGGEST_COLOR).executes(source -> lmh01(source.getSource(), EntityArgument.getPlayer(source, "target"), StringArgumentType.getString(source, "color")))));
+                .then(Commands.argument("color", StringArgumentType.string()).suggests(SUGGEST_COLOR).executes(source -> lmh01(source.getSource(), EntityArgument.getPlayer(source, "target"), StringArgumentType.getString(source, "color"))))
+                .then(Commands.literal("test").executes(source -> testPart2())));
     }
     private static int lmh01(CommandSource source, PlayerEntity player){
         source.sendFeedback(new TranslationTextComponent("commands.lmh01_test", player.getDisplayName()), true);
@@ -38,6 +40,11 @@ public class LMH01DebugCommand {
         if(iCommandSource instanceof PlayerEntity){
             CommandHelper.sendCommandFeedback("It Worked", source, true);
         }
+        return 1;
+    }
+    private static int testPart2(){
+        Debug.testWarningHelper();
+        Debug.testErrorHelper();
         return 1;
     }
 }

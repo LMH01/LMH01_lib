@@ -17,18 +17,18 @@ public class UpdateCheckerHelper {
         new Thread("UpdateChecker: " + modid){
             public void run(){
                 /*Modid is beeing added to the Arrays to make it possible to sort them later correctly*/
-                DebugHelper.sendDebugInformation(modid + ": Searching for updates...", 5, 0, modid);
+                DebugHelper.sendDebugInformation(modid + ": Searching for updates...", 5, modid);
                 String latestVersion =  WebHelper.getContentFromURL(updateURL);
                 String latestVersionWithModid = modid + latestVersion;
                 String currentVersionWithModid = modid + currentModVersion;
 
                 if (!currentModVersion.equals(latestVersion)){
-                    DebugHelper.sendDebugInformation("Update check complete for " + modid + " using url: " + updateURL + ": New update found: " + latestVersion, 4, 0);
+                    DebugHelper.sendDebugInformation("Update check complete for " + modid + " using url: " + updateURL + ": New update found: " + latestVersion, 4);
                     UpdateCheckerManager.addUpdateAvailable(modid, true);
                     UpdateCheckerManager.addNewestVersion(latestVersionWithModid);
                     UpdateCheckerManager.increaseNumberOfAvailableUpdates(1);
                 }else{
-                    DebugHelper.sendDebugInformation("Update check complete for " + modid + ": No update available", 4, 0);
+                    DebugHelper.sendDebugInformation("Update check complete for " + modid + ": No update available", 4);
                     UpdateCheckerManager.addUpdateAvailable(modid, false);
                     UpdateCheckerManager.addNewestVersion(currentVersionWithModid);
                 }

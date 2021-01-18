@@ -35,7 +35,7 @@ public class SubModManager {
     public static void registerSubMod(String modid, String name, String version, String updateURL, String downloadURL){
         if(!allModsRegistered){
             modsCount++;
-            DebugHelper.sendDebugInformation("Registering new SubMod: modid: " + modid + ", name: " + name + ", version: " + version + ", updateURL: " + updateURL + ", downloadURL: " + downloadURL, 4, 0);
+            DebugHelper.sendDebugInformation("Registering new SubMod: modid: " + modid + ", name: " + name + ", version: " + version + ", updateURL: " + updateURL + ", downloadURL: " + downloadURL, 4);
             REGISTERED_MODS.add(modid);
             REGISTERED_MODS.add(name);
             REGISTERED_MODS.add(version);
@@ -56,7 +56,7 @@ public class SubModManager {
      */
     public static void registerModAddon(String name){
         modAddonCount++;
-        DebugHelper.sendDebugInformation("Registering new Addon: name: " + name, 4, 0);
+        DebugHelper.sendDebugInformation("Registering new Addon: name: " + name, 4);
         REGISTERED_ADDONS.add(name);
     }
 

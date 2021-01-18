@@ -19,7 +19,7 @@ public class LMH01_libEvents {
     /*Mod commands registry*/
     @SubscribeEvent
     public static void registerCommandsEvent(final RegisterCommandsEvent event){
-        DebugHelper.sendDebugInformation("Registering commands..", 5, 0);
+        DebugHelper.sendDebugInformation("Registering commands..", 5);
         LMH01DebugCommand.register(event.getDispatcher());
         LMH01Command.register(event.getDispatcher());
     }

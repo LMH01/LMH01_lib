@@ -15,7 +15,7 @@ public class Debug {
         WarningHelper.addWarning("Test Warnung 04", References.MODID);
         WarningHelper.addWarning("Test Warnung 05", References.MODID);
         WarningHelper.addWarning("Test Warnung 06", References.MODID);
-        DebugHelper.sendDebugInformation(WarningHelper.getListOfWarningsAsString(), 1, 0);
+        DebugHelper.sendDebugInformation(WarningHelper.getListOfWarningsAsString(), 5);
     }
     public static void testErrorHelper(){
         ErrorHelper.addError("Test Error 01", References.MODID);
@@ -24,16 +24,16 @@ public class Debug {
         ErrorHelper.addError("Test Error 04", References.MODID);
         ErrorHelper.addError("Test Error 05", References.MODID);
         ErrorHelper.addError("Test Error 06", References.MODID);
-        DebugHelper.sendDebugInformation(ErrorHelper.getListOfErrorsAsString(), 1, 0);
+        DebugHelper.sendDebugInformation(ErrorHelper.getListOfErrorsAsString(), 5);
     }
     public static void testDebugHelper(){
-        DebugHelper.sendDebugInformation("Debug", 5, 0);
-        DebugHelper.sendDebugInformation("Info", 4, 0);
-        DebugHelper.sendDebugInformation("Warning", 3, 0);
-        DebugHelper.sendDebugInformation("Error", 2, 0);
-        DebugHelper.sendDebugInformation("Fatal", 1, 0);
-        DebugHelper.sendDebugInformation("Debug information send: " + DebugHelper.getAmountOfDebugInformationSent(), 2, 0);
-        DebugHelper.sendDebugInformation("Ein anderer Mod", 1, 0, "test_mod");
+        DebugHelper.sendDebugInformation("Debug", 5);
+        DebugHelper.sendDebugInformation("Info", 4);
+        DebugHelper.sendDebugInformation("Warning", 3);
+        DebugHelper.sendDebugInformation("Error", 2);
+        DebugHelper.sendDebugInformation("Fatal", 1);
+        DebugHelper.sendDebugInformation("Debug information send: " + DebugHelper.getAmountOfDebugInformationSent(), 2);
+        DebugHelper.sendDebugInformation("Ein anderer Mod", 1, "test_mod");
 
     }
     public static void registerSomeTestModsAndAddons(){
@@ -49,10 +49,10 @@ public class Debug {
     public static void testUpdateChecker(){
         for(int i = 0; i < 6; i++){
             try {
-                DebugHelper.sendDebugInformation("Update Available for i = " + i + ": " + UpdateCheckerManager.getUpdateAvailableArrayList().get(i), 2, 0);
-                DebugHelper.sendDebugInformation("Newest Version for i = " + i + ": " + UpdateCheckerManager.getNewestVersionArrayList().get(i), 2, 0);
+                DebugHelper.sendDebugInformation("Update Available for i = " + i + ": " + UpdateCheckerManager.getUpdateAvailableArrayList().get(i), 2);
+                DebugHelper.sendDebugInformation("Newest Version for i = " + i + ": " + UpdateCheckerManager.getNewestVersionArrayList().get(i), 2);
             }catch (NullPointerException e){
-                DebugHelper.sendDebugInformation("Nullpointer Excelption: ", 2, 0);
+                DebugHelper.sendDebugInformation("Nullpointer Excelption: ", 2);
                 e.printStackTrace();
             }
         }

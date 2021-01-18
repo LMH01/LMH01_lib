@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class WarningHelper {
     private static int Warnings = 0;
     private static final ArrayList<String> LIST_OF_WARNINGS = new ArrayList<>();
-    private static final int WARNING_TEXT_BODY_POSITION = DebugHelper.addCommonTextBody("");
     //TODO Make a config setting to enable/disable the sending of warnings into the chat.
     /**
      * ModID will be defaulted as lmh01_lib;
@@ -35,7 +34,7 @@ public class WarningHelper {
 
         }
         Warnings++;
-        DebugHelper.sendDebugInformation(description, 3, WARNING_TEXT_BODY_POSITION, modid);
+        DebugHelper.sendDebugInformation(description, 3, modid);
     }
 
     /**
