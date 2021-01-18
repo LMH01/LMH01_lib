@@ -1,6 +1,5 @@
 package com.github.lmh01.lmh01_lib.util;
 
-import com.github.lmh01.lmh01_lib.LMH01_lib;
 import com.github.lmh01.lmh01_lib.helpers.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandSource;
@@ -13,11 +12,10 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 public class UpdateCheckerManager {
-    //TODO Make all main variables private and let them get called by functions to prevent misuse.
     private static final ArrayList<String> UPDATE_AVAILABLE = new ArrayList<>();
     private static final ArrayList<String> NEWEST_VERSION = new ArrayList<>();
-    private static final ArrayList<String> REGISTERED_MODS = SubModManager.getRegisteredModsArrayList();
-    private static final CountDownLatch WAIT_FOR_UPDATES_FINISHED = new CountDownLatch(SubModManager.getModCount()+1);
+    private static final ArrayList<String> REGISTERED_MODS = ChildModManager.getRegisteredModsArrayList();
+    private static final CountDownLatch WAIT_FOR_UPDATES_FINISHED = new CountDownLatch(ChildModManager.getModCount()+1);
     private static boolean newLMH01_libVersionAvailable = false;
     private static String newestLMH01_libVersion = "";
     private static int numberOfAvailableUpdates = 0;
@@ -32,13 +30,13 @@ public class UpdateCheckerManager {
 
 
     /**
-     * Checks all registered lmh01 mods for updates. Register a new sub-mod fia {@link SubModManager#registerSubMod(String, String, String, String, String)}
+     * Checks all registered lmh01 mods for updates. Register a new sub-mod fia {@link ChildModManager#registerSubMod(String, String, String, String, String)}
      */
     public static void checkForUpdates(){
-        if(SubModManager.areAllModsRegistered()){
+        if(ChildModManager.areAllModsRegistered()){
             checkLMH01_libForUpdates();
             int modNumber = 1;
-            for (int i = 0; i < SubModManager.getModCount()*4; i= i+4){
+            for (int i = 0; i < ChildModManager.getModCount()*4; i= i+4){
                 UpdateCheckerHelper.checkForUpdates(REGISTERED_MODS.get(i+3), REGISTERED_MODS.get(i), REGISTERED_MODS.get(i+2));
                 modNumber++;
             }
@@ -149,7 +147,7 @@ public class UpdateCheckerManager {
      * This function will print into the chat what updates are available
      */
     public static void printChatNotification(boolean calledFromEvents){
-        if(SubModManager.getModCount()!=0 && UpdateCheckerManager.numberOfAvailableUpdates!=0 ||newLMH01_libVersionAvailable){
+        if(ChildModManager.getModCount()!=0 && UpdateCheckerManager.numberOfAvailableUpdates!=0 ||newLMH01_libVersionAvailable){
             if(UpdateCheckerManager.numberOfAvailableUpdates==1){
                 ChatHelper.sendTranslatedChatMessage("text.lmh01.update_available", TextFormatting.GOLD);
             }else{
@@ -158,7 +156,7 @@ public class UpdateCheckerManager {
             if(newLMH01_libVersionAvailable){
                 ChatHelper.sendChatMessage(TextFormatting.GOLD + "LMH01_lib (" + References.VERSION + "): " + TextFormatting.DARK_AQUA + UpdateCheckerManager.newestLMH01_libVersion, References.DOWNLOAD_URL, "tooltip.click_to_open_lmh01_lib_download_page");
             }
-            SubModManager.printSummary(true, true, false);
+            ChildModManager.printSummary(true, true, false);
             ChatHelper.sendTranslatedChatMessage("text.lmh01.click_version_hint", TextFormatting.GRAY);
         }else{
             if(!calledFromEvents){

@@ -1,14 +1,13 @@
 package com.github.lmh01.lmh01_lib.helpers;
 
-import com.github.lmh01.lmh01_lib.util.SubModManager;
-import com.github.lmh01.lmh01_lib.util.UpdateCheckerManager;
+import com.github.lmh01.lmh01_lib.util.*;
 
 public class UpdateCheckerHelper {
 
     /**
      * Checks a specified URL for a version sting and compares it to the current version. Do not call this function unless
      * you know what you are doing. This function may only be called by the {@link UpdateCheckerManager}.
-     * If you want to check your mod for updates, register your mod fia {@link SubModManager#registerSubMod(String, String, String, String, String)}.
+     * If you want to check your mod for updates, register your mod fia {@link ChildModManager#registerChildMod(String, String, String, String, String)}.
      * @param updateURL The updateURL
      * @param modid The modid
      * @param currentModVersion Current mod version

@@ -22,7 +22,7 @@ public class LMH01_lib {
     private void setup(final FMLCommonSetupEvent event) {
         DebugHelper.sendDebugInformation("Beginning Pre-Init", 4);
         //TODO Write config file
-        //Debug.registerSomeTestModsAndAddons();
+        Debug.registerSomeTestModsAndAddons();
         DebugHelper.sendDebugInformation("Working Directory = " + System.getProperty("user.dir"), 4);
     }
 
@@ -36,7 +36,7 @@ public class LMH01_lib {
     private void processIMC(final InterModProcessEvent event) {
         DebugHelper.sendDebugInformation("Starting postInit",4);
         //TODO decide if i should keep the news loader and if yes implement it
-        SubModManager.setAllModsRegistered();
+        ChildModManager.setAllModsRegistered();
         UpdateCheckerManager.checkForUpdates();
         Thread thread = new Thread(UpdateCheckerManager.RUNNABLE_WAIT_FOR_UPDATES_FINISHED_AND_SEND_LOADING_SUMMARY);
         thread.start();

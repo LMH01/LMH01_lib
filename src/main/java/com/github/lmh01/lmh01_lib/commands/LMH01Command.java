@@ -3,8 +3,8 @@ package com.github.lmh01.lmh01_lib.commands;
 import com.github.lmh01.lmh01_lib.LMH01_lib;
 import com.github.lmh01.lmh01_lib.helpers.CommandHelper;
 import com.github.lmh01.lmh01_lib.helpers.DebugHelper;
+import com.github.lmh01.lmh01_lib.util.ChildModManager;
 import com.github.lmh01.lmh01_lib.util.References;
-import com.github.lmh01.lmh01_lib.util.SubModManager;
 import com.github.lmh01.lmh01_lib.util.UpdateCheckerManager;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -66,14 +66,14 @@ public class LMH01Command {
         return 1;
     }
     private static int castModsSubCommand(CommandSource source){
-        if(SubModManager.getModCount()==0 && SubModManager.getModAddonCount()==0){
+        if(ChildModManager.getModCount()==0 && ChildModManager.getModAddonCount()==0){
             CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.mods.firstLine_without_mods", TextFormatting.DARK_GREEN, source, true);
         }else{
            CommandHelper.sendTranslatedCommandFeedback("commands.lmh01.mods.firstLine_with_mods", TextFormatting.DARK_GREEN, source, true);
             if(LMH01_lib.isRunningOnClientSide()){
-                SubModManager.printSummary(true, false,true);
+                ChildModManager.printSummary(true, false,true);
             }else{
-                SubModManager.printSummary(false, false,true);
+                ChildModManager.printSummary(false, false,true);
             }
             CommandHelper.sendTranslatedCommandFeedback("text.lmh01.click_version_hint", TextFormatting.GRAY, source, true);
         }

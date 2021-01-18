@@ -1,8 +1,8 @@
 package com.github.lmh01.lmh01_lib.commands;
 
 import com.github.lmh01.lmh01_lib.helpers.CommandHelper;
+import com.github.lmh01.lmh01_lib.util.ChildModManager;
 import com.github.lmh01.lmh01_lib.util.Debug;
-import com.github.lmh01.lmh01_lib.util.SubModManager;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
@@ -28,8 +28,8 @@ public class LMH01DebugCommand {
     }
     private static int lmh01(CommandSource source, PlayerEntity player){
         source.sendFeedback(new TranslationTextComponent("commands.lmh01_test", player.getDisplayName()), true);
-        SubModManager.printSummary(true, true, false);
-        SubModManager.printSummary(false, false, true);
+        ChildModManager.printSummary(true, true, false);
+        ChildModManager.printSummary(false, false, true);
         return 1;
     }
     private static int lmh01(CommandSource source, PlayerEntity player, String color){

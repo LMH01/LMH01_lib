@@ -18,7 +18,7 @@ public class LoadingSummary {
         showWaringsAndErrorsPart();
         showLMH01_libVersion();
         showNews();
-        if(SubModManager.getModCount() == UpdateCheckerManager.getUpdateAvailableArrayList().size()){
+        if(ChildModManager.getModCount() == UpdateCheckerManager.getUpdateAvailableArrayList().size()){
             showComponentsPart();
         }else{
             WarningHelper.addWarning("Can't show information about LMH01 Mods in loading summary now: Update Checks are not complete yet.");
@@ -34,24 +34,24 @@ public class LoadingSummary {
         } else if (WarningHelper.getNumberOfWarnings() == 0 && ErrorHelper.getNumberOfErrors() > 0) {
             send("LMH01_lib has been succesfully Installed with " + ErrorHelper.getNumberOfErrors() + " Errors!");
         } else {
-            if (SubModManager.getModCount() == 1 && SubModManager.getModAddonCount() == 1) {
-                send("LMH01_lib has been succesfully Installed with " + SubModManager.getModCount() + " Mod and " + SubModManager.getModAddonCount() + " Addon!");
-            } else if (SubModManager.getModCount() > 1 && SubModManager.getModAddonCount() == 1) {
-                send("LMH01_lib has been succesfully Installed with " + SubModManager.getModCount() + " Mods and " + SubModManager.getModAddonCount() + " Addon!");
-            } else if (SubModManager.getModCount() > 1 && SubModManager.getModAddonCount() > 1) {
-                send("LMH01_lib has been succesfully Installed with " + SubModManager.getModCount() + " Mods and " + SubModManager.getModAddonCount() + " Addons!");
-            } else if (SubModManager.getModCount() == 1 && SubModManager.getModAddonCount() > 1) {
-                send("LMH01_lib has been succesfully Installed with " + SubModManager.getModCount() + " Mod and " + SubModManager.getModAddonCount() + " Addons!");
-            } else if (SubModManager.getModCount() == 0 && SubModManager.getModAddonCount() == 0) {
-                send("LMH01_lib has been succesfully Installed with " + SubModManager.getModCount() + " Mods and " + SubModManager.getModAddonCount() + " Addons!");
-            } else if (SubModManager.getModCount() == 1 && SubModManager.getModAddonCount() == 0) {
-                send("LMH01_lib has been succesfully Installed with " + SubModManager.getModCount() + " Mod and " + SubModManager.getModAddonCount() + " Addons!");
-            } else if (SubModManager.getModCount() == 0 && SubModManager.getModAddonCount() == 1) {
-                send("LMH01_lib has been succesfully Installed with " + SubModManager.getModCount() + " Mods and " + SubModManager.getModAddonCount() + " Addon!");
-            } else if (SubModManager.getModCount() > 1 && SubModManager.getModAddonCount() == 0) {
-                send("LMH01_lib has been succesfully Installed with " + SubModManager.getModCount() + " Mods and " + SubModManager.getModAddonCount() + " Addons!");
+            if (ChildModManager.getModCount() == 1 && ChildModManager.getModAddonCount() == 1) {
+                send("LMH01_lib has been succesfully Installed with " + ChildModManager.getModCount() + " Mod and " + ChildModManager.getModAddonCount() + " Addon!");
+            } else if (ChildModManager.getModCount() > 1 && ChildModManager.getModAddonCount() == 1) {
+                send("LMH01_lib has been succesfully Installed with " + ChildModManager.getModCount() + " Mods and " + ChildModManager.getModAddonCount() + " Addon!");
+            } else if (ChildModManager.getModCount() > 1 && ChildModManager.getModAddonCount() > 1) {
+                send("LMH01_lib has been succesfully Installed with " + ChildModManager.getModCount() + " Mods and " + ChildModManager.getModAddonCount() + " Addons!");
+            } else if (ChildModManager.getModCount() == 1 && ChildModManager.getModAddonCount() > 1) {
+                send("LMH01_lib has been succesfully Installed with " + ChildModManager.getModCount() + " Mod and " + ChildModManager.getModAddonCount() + " Addons!");
+            } else if (ChildModManager.getModCount() == 0 && ChildModManager.getModAddonCount() == 0) {
+                send("LMH01_lib has been succesfully Installed with " + ChildModManager.getModCount() + " Mods and " + ChildModManager.getModAddonCount() + " Addons!");
+            } else if (ChildModManager.getModCount() == 1 && ChildModManager.getModAddonCount() == 0) {
+                send("LMH01_lib has been succesfully Installed with " + ChildModManager.getModCount() + " Mod and " + ChildModManager.getModAddonCount() + " Addons!");
+            } else if (ChildModManager.getModCount() == 0 && ChildModManager.getModAddonCount() == 1) {
+                send("LMH01_lib has been succesfully Installed with " + ChildModManager.getModCount() + " Mods and " + ChildModManager.getModAddonCount() + " Addon!");
+            } else if (ChildModManager.getModCount() > 1 && ChildModManager.getModAddonCount() == 0) {
+                send("LMH01_lib has been succesfully Installed with " + ChildModManager.getModCount() + " Mods and " + ChildModManager.getModAddonCount() + " Addons!");
             } else {
-                send("LMH01_lib Mod has been succesfully Installed with " + SubModManager.getModCount() + " Mod and " + SubModManager.getModAddonCount() + " Addon!");
+                send("LMH01_lib Mod has been succesfully Installed with " + ChildModManager.getModCount() + " Mod and " + ChildModManager.getModAddonCount() + " Addon!");
             }
         }
     }
@@ -78,8 +78,8 @@ public class LoadingSummary {
 
 
         send("LMH01 Mods: ");
-        if(SubModManager.getModCount()!=0){
-            SubModManager.printSummary(false, false, true);
+        if(ChildModManager.getModCount()!=0){
+            ChildModManager.printSummary(false, false, true);
         }else{
             send("No mods installed");
         }
@@ -99,7 +99,7 @@ public class LoadingSummary {
         }
     }
     /**
-     * Sends a information into the console with less parameters than {@link DebugHelper#sendDebugInformation(String, int, int, String)}
+     * Sends a information into the console with less parameters than {@link DebugHelper#sendDebugInformation(String, int, String)}
      * @param message The message sent
      */
     private static void send (String message){
