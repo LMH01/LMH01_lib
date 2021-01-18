@@ -68,7 +68,10 @@ public class ChildModManager {
         REGISTERED_ADDONS.add(name);
     }
 
-
+    /**
+     * Downloads a list of mods that have been programmed by lmh01.
+     * This list will be compared to the installed child mods later.
+     */
     public static void checkForOfficialChildMods(){
         new Thread("LMH01_lib: Check for official child mods"){
             public void run() {

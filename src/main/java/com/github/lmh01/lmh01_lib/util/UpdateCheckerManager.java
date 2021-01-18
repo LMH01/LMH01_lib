@@ -8,13 +8,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
 
 public class UpdateCheckerManager {
     private static final ArrayList<String> UPDATE_AVAILABLE = new ArrayList<>();
     private static final ArrayList<String> NEWEST_VERSION = new ArrayList<>();
     private static final ArrayList<String> REGISTERED_MODS = ChildModManager.getRegisteredModsArrayList();
-    private static final CountDownLatch WAIT_FOR_UPDATES_FINISHED = new CountDownLatch(ChildModManager.getModCount()+1);
     private static boolean newLMH01_libVersionAvailable = false;
     private static String newestLMH01_libVersion = "";
     private static int numberOfAvailableUpdates = 0;
@@ -76,14 +74,6 @@ public class UpdateCheckerManager {
     }
 
     /**
-     * Counts down the countdown latch by one.
-     * Do not use unless you know what you are doing!
-     */
-    public static void countDownWaitForUpdatesFinished(){
-        WAIT_FOR_UPDATES_FINISHED.countDown();
-    }
-
-    /**
      * Returns the update available array list.
      * @return The array list.
      */
@@ -99,16 +89,6 @@ public class UpdateCheckerManager {
         return NEWEST_VERSION;
     }
 
-    /*Shows Loading Summary when all update checkers are done*/
-    public static final Runnable RUNNABLE_WAIT_FOR_UPDATES_FINISHED_AND_SEND_LOADING_SUMMARY = () -> {
-        try {
-            WAIT_FOR_UPDATES_FINISHED.await();
-            LoadingSummary.showLoadingSummary();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    };
-
     /**
      * Checks LMH01_lib for updates
      */
@@ -121,7 +101,6 @@ public class UpdateCheckerManager {
                 if(!newestVersion.equals(References.VERSION)){
                     newLMH01_libVersionAvailable = true;
                 }
-                WAIT_FOR_UPDATES_FINISHED.countDown();
             }
         }.start();
     }

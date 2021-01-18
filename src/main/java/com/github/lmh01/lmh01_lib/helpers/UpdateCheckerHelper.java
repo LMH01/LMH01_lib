@@ -31,7 +31,6 @@ public class UpdateCheckerHelper {
                     UpdateCheckerManager.addUpdateAvailable(modid, false);
                     UpdateCheckerManager.addNewestVersion(currentVersionWithModid);
                 }
-                UpdateCheckerManager.countDownWaitForUpdatesFinished();
             }
 
         }.start();

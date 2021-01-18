@@ -2,7 +2,7 @@ package com.github.lmh01.lmh01_lib.commands;
 
 import com.github.lmh01.lmh01_lib.helpers.CommandHelper;
 import com.github.lmh01.lmh01_lib.util.ChildModManager;
-import com.github.lmh01.lmh01_lib.util.LoadingSummary;
+import com.github.lmh01.lmh01_lib.util.Debug;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
@@ -43,9 +43,8 @@ public class LMH01DebugCommand {
         return 1;
     }
     private static int testPart2(){
-        LoadingSummary.showLoadingSummary();
-        //Debug.testWarningHelper();
-        //Debug.testErrorHelper();
+        Debug.testWarningHelper();
+        Debug.testErrorHelper();
         return 1;
     }
 }

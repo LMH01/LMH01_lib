@@ -22,13 +22,14 @@ public class LMH01_lib {
     private void setup(final FMLCommonSetupEvent event) {
         DebugHelper.sendDebugInformation("Beginning Pre-Init", 4);
         //TODO Write config file
-        //Debug.registerSomeTestModsAndAddons();
+        Debug.registerSomeTestModsAndAddons();
         DebugHelper.sendDebugInformation("Working Directory = " + System.getProperty("user.dir"), 4);
     }
 
     /*Thinks in here only run on client side*/
     private void clientRegistries(final FMLClientSetupEvent event) {
         DebugHelper.sendDebugInformation(References.NAME + " " + References.VERSION + " is running on a client.", 4);
+        DebugHelper.sendDebugInformation("ChildMods: " + ChildModManager.getModCount(), 5);
         runningOnClientSide = true;
     }
 
@@ -39,8 +40,6 @@ public class LMH01_lib {
         ChildModManager.setChildModRegisteringClosed();
         ChildModManager.checkForOfficialChildMods();
         UpdateCheckerManager.checkForUpdates();
-        Thread thread = new Thread(UpdateCheckerManager.RUNNABLE_WAIT_FOR_UPDATES_FINISHED_AND_SEND_LOADING_SUMMARY);
-        thread.start();
         DebugHelper.sendDebugInformation("LMH01_lib loading complete:",4);
     }
 
