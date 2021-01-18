@@ -8,7 +8,7 @@ import net.minecraft.util.text.TextFormatting;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SubModManager {
+public class ChildModManager {
     private static final ArrayList<String> REGISTERED_MODS = new ArrayList<>();
     private static final ArrayList<String> REGISTERED_ADDONS = new ArrayList<>();
     private static final ArrayList<String> REGISTERED_MOD_NAMES = new ArrayList<>();
@@ -19,11 +19,14 @@ public class SubModManager {
     private static int modAddonCount = 0;
     private static boolean allModsRegistered = false;
     /*
-    * This class is used for integration with the mods that depend on lmh01_lib
-    * */
+     * This class is used for integration with the mods that depend on lmh01_lib
+     * */
 
+    //TODO Create a feature that gets all official child mod (official=child mods created by lmh01) names and compares them to the registered child mods.
+    // Displays a special "mark" in Loading Summary and in /lmh01 mods. Mark could be "(official)" or (L) in green. Hovering over L could reveal tooltip: "Official mod by LMH01"
+    // The message in the chat could look like this: "Trek Craft (1.16.4-0.1.0)(O): Installed".
     /**
-     * Use this function to register a new SubMod to LMH01_lib. When registering a new SubMod the mod will be
+     * Use this function to register a new Child Mod to LMH01_lib. When registering a new Child Mod the mod will be
      * checked for updates and will be present in the loading summary. Other integrations might be added later. Only works until post-init (InterModProcessEvent) is started.
      *
      * @param modid The modid of the mod that sends the register request
@@ -32,10 +35,10 @@ public class SubModManager {
      * @param updateURL The updateURL of the mod that sends the register request
      * @param downloadURL The URL where the download is available
      */
-    public static void registerSubMod(String modid, String name, String version, String updateURL, String downloadURL){
+    public static void registerChildMod(String modid, String name, String version, String updateURL, String downloadURL){
         if(!allModsRegistered){
             modsCount++;
-            DebugHelper.sendDebugInformation("Registering new SubMod: modid: " + modid + ", name: " + name + ", version: " + version + ", updateURL: " + updateURL + ", downloadURL: " + downloadURL, 4);
+            DebugHelper.sendDebugInformation("Registering new Child Mod: modid: " + modid + ", name: " + name + ", version: " + version + ", updateURL: " + updateURL + ", downloadURL: " + downloadURL, 4);
             REGISTERED_MODS.add(modid);
             REGISTERED_MODS.add(name);
             REGISTERED_MODS.add(version);
@@ -44,10 +47,10 @@ public class SubModManager {
             /*This call is used to create a array list with just the mod names to make it easier to sort it later*/
             REGISTERED_MOD_NAMES.add(name);
         }else{
-            WarningHelper.addWarning(modid + " tried to register a mod to lmh01_lib after InterModProcessEvent has been started.");
+            WarningHelper.addWarning(modid + " tried to register a child mod to lmh01_lib after InterModProcessEvent has been started.");
         }
     }
-
+    //TODO Create function that returns if an update for specified child mod is available
     /**
      * Use this function to register a new ModAddon to LMH01_lib. When registering a new ModAddon it will be
      * present in the loading summary. Other integrations might be added later.
@@ -145,17 +148,17 @@ public class SubModManager {
             }
 
         }
-        if(SubModManager.getModAddonCount() != 0 && showModAddons){
-            Collections.sort(SubModManager.REGISTERED_ADDONS);
+        if(modAddonCount != 0 && showModAddons){
+            Collections.sort(REGISTERED_ADDONS);
             if(ingame){
                 ChatHelper.sendChatMessage(TextFormatting.DARK_GREEN + "Addons: ");
-                for (int i = 0; i < SubModManager.getModAddonCount(); i++){
-                    ChatHelper.sendChatMessage(TextFormatting.GOLD + SubModManager.REGISTERED_ADDONS.get(i));
+                for (int i = 0; i < modAddonCount; i++){
+                    ChatHelper.sendChatMessage(TextFormatting.GOLD + REGISTERED_ADDONS.get(i));
                 }
             }else{
                 DebugHelper.sendDebugInformation("Addons:", 5);
-                for (int i = 0; i < SubModManager.getModAddonCount(); i++){
-                    DebugHelper.sendDebugInformation(SubModManager.REGISTERED_ADDONS.get(i), 5);
+                for (int i = 0; i < modAddonCount; i++){
+                    DebugHelper.sendDebugInformation(REGISTERED_ADDONS.get(i), 5);
                 }
             }
         }

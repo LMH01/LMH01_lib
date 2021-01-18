@@ -30,7 +30,7 @@ public class UpdateCheckerManager {
 
 
     /**
-     * Checks all registered lmh01 mods for updates. Register a new sub-mod fia {@link ChildModManager#registerSubMod(String, String, String, String, String)}
+     * Checks all registered lmh01 mods for updates. Register a new sub-mod fia {@link ChildModManager#registerChildMod(String, String, String, String, String)}
      */
     public static void checkForUpdates(){
         if(ChildModManager.areAllModsRegistered()){
@@ -129,7 +129,7 @@ public class UpdateCheckerManager {
 
     /**
      * Returns true if a new LMH01_lib version is available.
-     * @return
+     * @return Returns true if a new LMH01_lib version is available.
      */
     public static boolean isNewLMH01_libVersionAvailable(){
         return newLMH01_libVersionAvailable;
@@ -137,7 +137,7 @@ public class UpdateCheckerManager {
 
     /**
      * Returns the newest available LMH01_lib version.
-     * @return
+     * @return Returns the newest available LMH01_lib version.
      */
     public static String getNewestLMH01_libVersion(){
         return newestLMH01_libVersion;
